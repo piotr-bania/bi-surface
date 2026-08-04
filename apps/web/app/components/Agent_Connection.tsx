@@ -54,10 +54,7 @@ export default function Agent_Connection() {
     return (
         <section>
             <h1>BI Surface</h1>
-
-            <p>
-                Connection state: <strong>{connectionState}</strong>
-            </p>
+            <p>Connection state: {connectionState}</p>
 
             {agent && (
                 <div>
@@ -69,7 +66,7 @@ export default function Agent_Connection() {
 
             {message && <p>{message}</p>}
 
-            {connectionState === "connected" ? (
+            {connectionState === "connected" || connectionState === "disconnecting" ? (
                 <button
                     type="button"
                     onClick={disconnectAgent}
