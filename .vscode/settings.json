@@ -1,7 +1,35 @@
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/apps/agent/.venv/Scripts/python.exe",
     "python-envs.defaultEnvManager": "ms-python.python:venv",
-    "python-envs.workspaceSearchPaths": [
-        "apps/agent/.venv"
-    ]
+    "python-envs.workspaceSearchPaths": ["apps/agent/.venv"],
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.wordWrap": "on",
+    "editor.wrappingIndent": "same",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
