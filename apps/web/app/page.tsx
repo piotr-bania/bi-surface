@@ -1,10 +1,20 @@
-import Agent_Connection from "@/app/components/Agent_Connection"
+import Agent_Connection from "@/components/Agent_Connection"
 
-export default function Home() {
+export default function Home_Page() {
     return (
-        <main>
-            {/* App goes here */}
+        <section>
             <Agent_Connection />
-        </main>
+
+            <div className="col-span-12">
+                <h1>Heading 1</h1>
+                <h2>Heading 2</h2>
+                <h3>Heading 3</h3>
+                <h4>Heading 4</h4>
+                <h5>Heading 5</h5>
+                <h6>Heading 6</h6>
+                <p>Paragraph goes here.</p>
+                <a href="#">This is a link</a>
+            </div>
+        </section>
     )
 }

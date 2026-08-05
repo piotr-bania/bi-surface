@@ -1,0 +1,133 @@
+@use 'sass:color';
+@use './tokens' as *;
+
+/* ---------- Typography variables ---------- */
+@font-face {
+    font-family: 'SkylineBeachNbpRegular';
+    src: url('../public/fonts/SkylineBeachNbpRegular-qmrd.ttf');
+}
+
+@font-face {
+    font-family: 'CascadiaCode';
+    src: url('../public/fonts/CascadiaCode.ttf');
+}
+
+// Font families
+$display_font: 'SkylineBeachNbpRegular', sans-serif;
+$heading_font: 'CascadiaCode', sans-serif;
+$paragraph_font: 'CascadiaCode', sans-serif;
+$button_font: 'CascadiaCode', sans-serif;
+
+// Font weights
+$font_light: 300;
+$font_regular: 400;
+$font_medium: 500;
+$font_semibold: 600;
+$font_bold: 700;
+
+// Font styles
+$font_italic: italic;
+
+html,
+body {
+    font-family: $paragraph_font;
+    font-weight: $font_light;
+    font-size: $paragraph;
+    line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading), ui-sans-serif, system-ui;
+}
+
+/* ---------- Typography styles ---------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $heading_font;
+    font-weight: $font_regular;
+    text-transform: uppercase;
+    line-height: 1.1;
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-size: $header_1;
+}
+
+h2 {
+    font-size: $header_2;
+}
+
+h3 {
+    font-size: $header_3;
+}
+
+h4 {
+    font-size: $header_4;
+}
+
+h5 {
+    font-size: $header_5;
+}
+
+h6 {
+    font-size: $header_6;
+}
+
+p {
+    font-size: $paragraph;
+    font-family: $paragraph_font;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    font-size: $paragraph;
+    font-family: $button_font;
+    font-weight: $font_medium;
+    width: fit-content;
+    cursor: pointer;
+}
+
+button {
+    font-size: $paragraph_small;
+    font-family: $button_font;
+    font-weight: $font_medium;
+    text-transform: uppercase;
+    padding: calc($small * .125) calc($small * .5);
+    border: 1px solid black;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.display_font {
+    font-family: $display_font;
+    text-transform: capitalize;
+}
+
+.paragraph_small {
+    font-size: $paragraph_small;
+}
+
+.paragraph_tiny {
+    font-size: $paragraph_tiny;
+}
+
+.button_font {
+    font-family: $paragraph_font;
+    font-size: $paragraph_small;
+    font-weight: $font_light;
+}

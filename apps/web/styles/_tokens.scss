@@ -1,0 +1,70 @@
+// ---------- Colors ----------
+$primary_color: #b4823d;
+$secondary_color: #ddc19a;
+$accent_color: #a52115;
+
+$heading_color: #16171b;
+$paragraph_color: #5d6068;
+$background_color: #f6f5f3;
+$foreground_color: #ffffff;
+$border_color: #d8d9df;
+
+$muted_color: rgba(255, 255, 255, 0.2);
+$disabled_color: rgba(255, 255, 255, 0.1);
+
+$success: #22c55e;
+$warning: #f59e0b;
+$danger: #ef4444;
+$info: #3b82f6;
+
+// ---------- Fluid fonts ----------
+$paragraph_tiny: clamp(0.72rem, 0.25vi + 0.66rem, 0.89rem);
+$paragraph_small: clamp(0.8rem, 0.31vi + 0.72rem, 1rem);
+$paragraph: clamp(0.88rem, 0.38vi + 0.78rem, 1.13rem);
+$header_6: clamp(0.96rem, 0.47vi + 0.85rem, 1.27rem);
+$header_5: clamp(1.06rem, 0.56vi + 0.92rem, 1.42rem);
+$header_4: clamp(1.16rem, 0.67vi + 1rem, 1.6rem);
+$header_3: clamp(1.28rem, 0.8vi + 1.08rem, 1.8rem);
+$header_2: clamp(1.41rem, 0.95vi + 1.17rem, 2.03rem);
+$header_1: clamp(1.55rem, 1.12vi + 1.27rem, 2.28rem);
+
+// ---------- Fluid space ----------
+$small: clamp(1.13rem, calc(1.04rem + 0.41vw), 1.5rem);
+$medium: clamp(1.69rem, calc(1.57rem + 0.61vw), 2.25rem);
+$large: clamp(2.25rem, calc(2.09rem + 0.81vw), 3rem);
+
+.header_1 {
+    font-size: $header_1;
+}
+
+.header_2 {
+    font-size: $header_2;
+}
+
+.header_3 {
+    font-size: $header_3;
+}
+
+.header_4 {
+    font-size: $header_4;
+}
+
+.header_5 {
+    font-size: $header_5;
+}
+
+.header_6 {
+    font-size: $header_6;
+}
+
+.paragraph {
+    font-size: $paragraph;
+}
+
+.paragraph_small {
+    font-size: $paragraph_small;
+}
+
+.paragraph_tiny {
+    font-size: $paragraph_tiny;
+}
