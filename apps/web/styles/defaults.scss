@@ -1,0 +1,13 @@
+@use 'sass:color';
+@use './tokens' as *;
+@use './typography' as *;
+
+html,
+body {
+    background-color: $background_color;
+    color: $paragraph_color;
+    font-family: $paragraph_font;
+    font-weight: $font_light;
+    font-size: $paragraph;
+    line-height: 1.4;
+}

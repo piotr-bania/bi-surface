@@ -1,0 +1,154 @@
+@use 'sass:color';
+@use './tokens' as *;
+
+// ---------- Colour classes ----------
+// Main
+.primary_color {
+    color: $primary_color;
+}
+
+.secondary_color {
+    color: $secondary_color;
+}
+
+.accent_color {
+    color: $accent_color;
+}
+
+// Semantic
+.success {
+    color: $success;
+}
+
+.warning {
+    color: $warning;
+}
+
+.danger {
+    color: $danger;
+}
+
+.info {
+    color: $info;
+}
+
+.neutral_color {
+    color: $neutral_color;
+}
+
+// Backgrounds
+.background_color {
+    background-color: $background_color;
+}
+
+.panel_dark_color {
+    background-color: $panel_dark_color;
+}
+
+.panel_light_color {
+    background-color: $panel_light_color;
+}
+
+// Typography
+.heading_color {
+    color: $heading_color;
+}
+
+.paragraph_color {
+    color: $paragraph_color;
+}
+
+.muted_color {
+    color: $muted_color;
+}
+
+.disabled_color {
+    color: $disabled_color;
+}
+
+// Borders
+.primary_border_color {
+    border-color: $primary_border_color;
+}
+
+.secondary_border_color {
+    border-color: $secondary_border_color;
+}
+
+.accent_border_color {
+    border-color: $accent_border_color;
+}
+
+.success_border_color {
+    border-color: $success_border_color;
+}
+
+.warning_border_color {
+    border-color: $warning_border_color;
+}
+
+.danger_border_color {
+    border-color: $danger_border_color;
+}
+
+.info_border_color {
+    border-color: $info_border_color;
+}
+
+.neutral_border_color {
+    border-color: $neutral_border_color;
+}
+
+// Connections
+.connected_color {
+    color: $connected_color;
+}
+
+.connecting_color {
+    color: $connecting_color;
+}
+
+.disconnected_color {
+    color: $disconnected_color;
+}
+
+.offline_color {
+    color: $offline_color;
+}
+
+.critical_color {
+    color: $critical_color;
+}
+
+.system_color {
+    color: $system_color;
+}
+
+// Glows
+.primary_glow {
+    box-shadow: 0 0 10px $primary_glow;
+}
+
+.secondary_glow {
+    box-shadow: 0 0 10px $secondary_glow;
+}
+
+.accent_glow {
+    box-shadow: 0 0 10px $accent_glow;
+}
+
+.success_glow {
+    box-shadow: 0 0 10px $success_glow;
+}
+
+.warning_glow {
+    box-shadow: 0 0 10px $warning_glow;
+}
+
+.danger_glow {
+    box-shadow: 0 0 10px $danger_glow;
+}
+
+.info_glow {
+    box-shadow: 0 0 10px $info_glow;
+}

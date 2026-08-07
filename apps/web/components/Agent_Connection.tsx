@@ -1,14 +1,23 @@
 "use client"
 
 import { useRef, useState } from "react"
-import type { ConnectionState, HealthResponse } from "@/types/agent"
+import {
+    isHealthResponse,
+    isSystemResponse,
+    type ConnectionState,
+    type HealthResponse,
+    type SystemResponse,
+} from "@/types/agent"
 
 const AGENT_HEALTH_URL = "http://127.0.0.1:8000/api/v1/health"
+const AGENT_SYSTEM_URL = "http://127.0.0.1:8000/api/v1/system"
+
 const REQUEST_TIMEOUT_MS = 5000
 
 export default function Agent_Connection() {
     const [connectionState, setConnectionState] = useState<ConnectionState>("disconnected")
     const [agent, setAgent] = useState<HealthResponse | null>(null)
+    const [system, setSystem] = useState<SystemResponse | null>(null)
     const [message, setMessage] = useState<string | null>(null)
     const activeRequestController = useRef<AbortController | null>(null)
 
@@ -25,21 +34,42 @@ export default function Agent_Connection() {
 
         setConnectionState("connecting")
         setAgent(null)
+        setSystem(null)
         setMessage(null)
 
         try {
-            const response = await fetch(AGENT_HEALTH_URL, {
+            const healthResponse = await fetch(AGENT_HEALTH_URL, {
                 method: "GET",
                 signal: controller.signal,
             })
 
-            if (!response.ok) {
-                throw new Error(`Agent responded with HTTP ${response.status}`)
+            if (!healthResponse.ok) {
+                throw new Error(`Agent responded with HTTP ${healthResponse.status}`)
             }
 
-            const data: HealthResponse = await response.json()
+            const healthData: unknown = await healthResponse.json()
 
-            setAgent(data)
+            if (!isHealthResponse(healthData)) {
+                throw new Error("Agent returned an invalid health response.")
+            }
+
+            const systemResponse = await fetch(AGENT_SYSTEM_URL, {
+                method: "GET",
+                signal: controller.signal,
+            })
+
+            if (!systemResponse.ok) {
+                throw new Error(`System endpoint responded with HTTP ${systemResponse.status}`)
+            }
+
+            const systemData: unknown = await systemResponse.json()
+
+            if (!isSystemResponse(systemData)) {
+                throw new Error("Agent returned an invalid system response.")
+            }
+
+            setAgent(healthData)
+            setSystem(systemData)
             setConnectionState("connected")
         } catch (error: unknown) {
             setAgent(null)
@@ -81,6 +111,7 @@ export default function Agent_Connection() {
 
         window.setTimeout(() => {
             setAgent(null)
+            setSystem(null)
             setMessage(null)
             setConnectionState("disconnected")
         }, 500)
@@ -97,8 +128,12 @@ export default function Agent_Connection() {
         connectionState === "disconnecting"
 
     return (
-        <div className="col-span-12 flex flex-col">
-            <h1 className="display_font">BI Surface</h1>
+        <div className="col-span-12 flex flex-col gap-3">
+            <div className="flex flex-col">
+                <h1 className="display_font accent_color">BI Surface Agent</h1>
+                <p className="primary_color">Explainable Local System Visibility</p>
+            </div>
+
             <p>Connection state: {connectionState}</p>
 
             {agent && (
@@ -109,11 +144,28 @@ export default function Agent_Connection() {
                 </div>
             )}
 
+            {system && (
+                <div>
+                    <p>Hostname: {system.hostname}</p>
+                    <p>Operating system: {system.operating_system}</p>
+                    <p>OS release: {system.os_release}</p>
+                    <p>OS version: {system.os_version}</p>
+                    <p>Architecture: {system.architecture}</p>
+                    <p>Processor: {system.processor}</p>
+                    <p>Physical cores: {system.physical_cores}</p>
+                    <p>Logical cores: {system.logical_cores}</p>
+                    <p>Memory: {system.memory_total_bytes}</p>
+                </div>
+            )}
+
             {message && <p>{message}</p>}
 
             {canDisconnect ? (
                 <button
                     type="button"
+                    className={
+                        connectionState === "connecting" ? "neutral cancel" : "danger disconnect"
+                    }
                     onClick={disconnectAgent}
                     disabled={connectionState === "disconnecting"}
                 >
@@ -124,7 +176,11 @@ export default function Agent_Connection() {
                           : "Disconnect"}
                 </button>
             ) : (
-                <button type="button" onClick={connectAgent}>
+                <button
+                    type="button"
+                    className={canRetry ? "warning retry" : "primary"}
+                    onClick={connectAgent}
+                >
                     {canRetry ? "Retry connection" : "Connect agent"}
                 </button>
             )}
