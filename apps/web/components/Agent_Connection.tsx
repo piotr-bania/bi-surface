@@ -8,8 +8,10 @@ import {
     type SystemResponse,
 } from "@/types/agent"
 import { useRef, useState } from "react"
-import { formatBytes } from "@/helpers/formatBytes"
-import { formatDuration } from "@/helpers/formatDuration"
+
+import Heading from "@/components/ui/text/Heading"
+import Paragraph from "@/components/ui/text/Paragraph"
+import System_Overview from "@/components/system/System_Overview"
 
 const AGENT_HEALTH_URL = "http://127.0.0.1:8000/api/v1/health"
 const AGENT_SYSTEM_URL = "http://127.0.0.1:8000/api/v1/system"
@@ -18,9 +20,11 @@ const REQUEST_TIMEOUT_MS = 5000
 
 export default function Agent_Connection() {
     const [connectionState, setConnectionState] = useState<ConnectionState>("disconnected")
+
     const [agent, setAgent] = useState<HealthResponse | null>(null)
     const [system, setSystem] = useState<SystemResponse | null>(null)
     const [message, setMessage] = useState<string | null>(null)
+
     const activeRequestController = useRef<AbortController | null>(null)
 
     async function connectAgent() {
@@ -93,6 +97,7 @@ export default function Agent_Connection() {
             }
 
             setConnectionState("error")
+
             setMessage(
                 error instanceof Error ? error.message : "An unknown connection error occurred."
             )
@@ -132,53 +137,28 @@ export default function Agent_Connection() {
     return (
         <div className="col-span-12 flex flex-col gap-3">
             <div className="flex flex-col">
-                <h1 className="display_font accent_color">BI Surface Agent</h1>
-                <p className="primary_color">Explainable Local System Visibility</p>
+                <Heading as="h1" className="display_font accent_color">
+                    BI Surface Agent
+                </Heading>
+
+                <Paragraph className="primary_color">Explainable Local System Visibility</Paragraph>
             </div>
 
-            <p>Connection state: {connectionState}</p>
+            <Paragraph>Connection state: {connectionState}</Paragraph>
 
             {agent && (
                 <div>
-                    <p>Service: {agent.service}</p>
-                    <p>Status: {agent.status}</p>
-                    <p>Version: {agent.version}</p>
+                    <Paragraph>Service: {agent.service}</Paragraph>
+
+                    <Paragraph>Status: {agent.status}</Paragraph>
+
+                    <Paragraph>Version: {agent.version}</Paragraph>
                 </div>
             )}
 
-            {system && (
-                <div className="flex flex-col gap-3">
-                    <div>
-                        <p>Hostname: {system.hostname}</p>
-                        <p>
-                            Operating system: {system.operating_system.name}{" "}
-                            {system.operating_system.release}
-                        </p>
-                        <p>OS version: {system.operating_system.version}</p>
-                        <p>Architecture: {system.operating_system.architecture}</p>
-                    </div>
+            {system && <System_Overview system={system} />}
 
-                    <div>
-                        <p>Processor: {system.cpu.name}</p>
-                        <p>Physical cores: {system.cpu.physical_cores}</p>
-                        <p>Logical cores: {system.cpu.logical_cores}</p>
-                        <p>CPU usage: {system.cpu.usage_percent}%</p>
-                    </div>
-
-                    <div>
-                        <p>Total memory: {formatBytes(system.memory.total_bytes)}</p>
-                        <p>Used memory: {formatBytes(system.memory.used_bytes)}</p>
-                        <p>Available memory: {formatBytes(system.memory.available_bytes)}</p>
-                        <p>Memory usage: {system.memory.usage_percent}%</p>
-                    </div>
-
-                    <div>
-                        <p>Uptime: {formatDuration(system.uptime_seconds)}</p>
-                    </div>
-                </div>
-            )}
-
-            {message && <p>{message}</p>}
+            {message && <Paragraph>{message}</Paragraph>}
 
             {canDisconnect ? (
                 <button
