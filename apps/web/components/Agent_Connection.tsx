@@ -1,6 +1,5 @@
 "use client"
 
-import { useRef, useState } from "react"
 import {
     isHealthResponse,
     isSystemResponse,
@@ -8,6 +7,9 @@ import {
     type HealthResponse,
     type SystemResponse,
 } from "@/types/agent"
+import { useRef, useState } from "react"
+import { formatBytes } from "@/helpers/formatBytes"
+import { formatDuration } from "@/helpers/formatDuration"
 
 const AGENT_HEALTH_URL = "http://127.0.0.1:8000/api/v1/health"
 const AGENT_SYSTEM_URL = "http://127.0.0.1:8000/api/v1/system"
@@ -145,16 +147,34 @@ export default function Agent_Connection() {
             )}
 
             {system && (
-                <div>
-                    <p>Hostname: {system.hostname}</p>
-                    <p>Operating system: {system.operating_system}</p>
-                    <p>OS release: {system.os_release}</p>
-                    <p>OS version: {system.os_version}</p>
-                    <p>Architecture: {system.architecture}</p>
-                    <p>Processor: {system.processor}</p>
-                    <p>Physical cores: {system.physical_cores}</p>
-                    <p>Logical cores: {system.logical_cores}</p>
-                    <p>Memory: {system.memory_total_bytes}</p>
+                <div className="flex flex-col gap-3">
+                    <div>
+                        <p>Hostname: {system.hostname}</p>
+                        <p>
+                            Operating system: {system.operating_system.name}{" "}
+                            {system.operating_system.release}
+                        </p>
+                        <p>OS version: {system.operating_system.version}</p>
+                        <p>Architecture: {system.operating_system.architecture}</p>
+                    </div>
+
+                    <div>
+                        <p>Processor: {system.cpu.name}</p>
+                        <p>Physical cores: {system.cpu.physical_cores}</p>
+                        <p>Logical cores: {system.cpu.logical_cores}</p>
+                        <p>CPU usage: {system.cpu.usage_percent}%</p>
+                    </div>
+
+                    <div>
+                        <p>Total memory: {formatBytes(system.memory.total_bytes)}</p>
+                        <p>Used memory: {formatBytes(system.memory.used_bytes)}</p>
+                        <p>Available memory: {formatBytes(system.memory.available_bytes)}</p>
+                        <p>Memory usage: {system.memory.usage_percent}%</p>
+                    </div>
+
+                    <div>
+                        <p>Uptime: {formatDuration(system.uptime_seconds)}</p>
+                    </div>
                 </div>
             )}
 

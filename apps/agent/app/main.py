@@ -1,6 +1,7 @@
 import platform
 import socket
 import psutil
+import time
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,16 +38,36 @@ def get_health() -> HealthResponse:
 def get_system() -> SystemResponse:
     physical_cores = psutil.cpu_count(logical=False)
     logical_cores = psutil.cpu_count(logical=True)
+
     memory = psutil.virtual_memory()
+
+    boot_time = psutil.boot_time()
+    uptime_seconds = time.time() - boot_time
 
     return SystemResponse(
         hostname=socket.gethostname(),
-        operating_system=platform.system(),
-        os_release=platform.release(),
-        os_version=platform.version(),
-        architecture=platform.machine(),
-        processor=platform.processor() or "Unknown",
-        physical_cores=physical_cores or 0,
-        logical_cores=logical_cores or 0,
-        memory_total_bytes=memory.total,
+
+        operating_system={
+            "name": platform.system(),
+            "release": platform.release(),
+            "version": platform.version(),
+            "architecture": platform.machine(),
+        },
+
+        cpu={
+            "name": platform.processor() or "Unknown",
+            "physical_cores": physical_cores or 0,
+            "logical_cores": logical_cores or 0,
+            "usage_percent": psutil.cpu_percent(interval=None),
+        },
+
+        memory={
+            "total_bytes": memory.total,
+            "available_bytes": memory.available,
+            "used_bytes": memory.used,
+            "usage_percent": memory.percent,
+        },
+
+        boot_time=boot_time,
+        uptime_seconds=uptime_seconds,
     )
