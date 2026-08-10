@@ -1,4 +1,5 @@
-import type { SystemResponse } from "@/types/agent"
+import type { SystemResponse, TelemetryResponse } from "@/types/agent"
+
 import { formatBytes } from "@/helpers/formatBytes"
 import { formatDuration } from "@/helpers/formatDuration"
 
@@ -6,9 +7,10 @@ import Paragraph from "@/components/ui/text/Paragraph"
 
 type SystemOverviewProps = {
     system: SystemResponse
+    telemetry: TelemetryResponse | null
 }
 
-export default function System_Overview({ system }: SystemOverviewProps) {
+export default function System_Overview({ system, telemetry }: SystemOverviewProps) {
     return (
         <div className="flex flex-col gap-3">
             <div>
@@ -31,24 +33,32 @@ export default function System_Overview({ system }: SystemOverviewProps) {
 
                 <Paragraph>Logical cores: {system.cpu.logical_cores}</Paragraph>
 
-                <Paragraph>CPU usage: {system.cpu.usage_percent}%</Paragraph>
+                {telemetry && <Paragraph>CPU usage: {telemetry.cpu_usage_percent}%</Paragraph>}
             </div>
 
             <div>
                 <Paragraph>Total memory: {formatBytes(system.memory.total_bytes)}</Paragraph>
 
-                <Paragraph>Used memory: {formatBytes(system.memory.used_bytes)}</Paragraph>
+                {telemetry && (
+                    <>
+                        <Paragraph>
+                            Used memory: {formatBytes(telemetry.memory_used_bytes)}
+                        </Paragraph>
 
-                <Paragraph>
-                    Available memory: {formatBytes(system.memory.available_bytes)}
-                </Paragraph>
+                        <Paragraph>
+                            Available memory: {formatBytes(telemetry.memory_available_bytes)}
+                        </Paragraph>
 
-                <Paragraph>Memory usage: {system.memory.usage_percent}%</Paragraph>
+                        <Paragraph>Memory usage: {telemetry.memory_usage_percent}%</Paragraph>
+                    </>
+                )}
             </div>
 
-            <div>
-                <Paragraph>Uptime: {formatDuration(system.uptime_seconds)}</Paragraph>
-            </div>
+            {telemetry && (
+                <div>
+                    <Paragraph>Uptime: {formatDuration(telemetry.uptime_seconds)}</Paragraph>
+                </div>
+            )}
         </div>
     )
 }

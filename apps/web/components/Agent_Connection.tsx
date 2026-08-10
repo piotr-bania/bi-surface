@@ -3,11 +3,14 @@
 import {
     isHealthResponse,
     isSystemResponse,
+    isTelemetryResponse,
     type ConnectionState,
     type HealthResponse,
     type SystemResponse,
+    type TelemetryResponse,
 } from "@/types/agent"
-import { useRef, useState } from "react"
+
+import { useEffect, useRef, useState } from "react"
 
 import Heading from "@/components/ui/text/Heading"
 import Paragraph from "@/components/ui/text/Paragraph"
@@ -15,20 +18,29 @@ import System_Overview from "@/components/system/System_Overview"
 
 const AGENT_HEALTH_URL = "http://127.0.0.1:8000/api/v1/health"
 const AGENT_SYSTEM_URL = "http://127.0.0.1:8000/api/v1/system"
+const AGENT_TELEMETRY_URL = "http://127.0.0.1:8000/api/v1/telemetry"
 
 const REQUEST_TIMEOUT_MS = 5000
+const TELEMETRY_INTERVAL_MS = 1500
 
 export default function Agent_Connection() {
     const [connectionState, setConnectionState] = useState<ConnectionState>("disconnected")
 
     const [agent, setAgent] = useState<HealthResponse | null>(null)
+
     const [system, setSystem] = useState<SystemResponse | null>(null)
+
+    const [telemetry, setTelemetry] = useState<TelemetryResponse | null>(null)
+
     const [message, setMessage] = useState<string | null>(null)
 
     const activeRequestController = useRef<AbortController | null>(null)
 
+    const telemetryRequestController = useRef<AbortController | null>(null)
+
     async function connectAgent() {
         const controller = new AbortController()
+
         activeRequestController.current = controller
 
         let didTimeOut = false
@@ -41,6 +53,7 @@ export default function Agent_Connection() {
         setConnectionState("connecting")
         setAgent(null)
         setSystem(null)
+        setTelemetry(null)
         setMessage(null)
 
         try {
@@ -79,10 +92,14 @@ export default function Agent_Connection() {
             setConnectionState("connected")
         } catch (error: unknown) {
             setAgent(null)
+            setSystem(null)
+            setTelemetry(null)
 
             if (didTimeOut) {
                 setConnectionState("timed_out")
+
                 setMessage("The BI Surface agent did not respond within 5 seconds.")
+
                 return
             }
 
@@ -92,7 +109,9 @@ export default function Agent_Connection() {
 
             if (error instanceof TypeError) {
                 setConnectionState("offline")
+
                 setMessage("The BI Surface agent could not be reached.")
+
                 return
             }
 
@@ -110,16 +129,91 @@ export default function Agent_Connection() {
         }
     }
 
+    useEffect(() => {
+        if (connectionState !== "connected") {
+            return
+        }
+
+        let cancelled = false
+        let timeoutId: number | undefined
+
+        async function refreshTelemetry() {
+            const controller = new AbortController()
+
+            telemetryRequestController.current = controller
+
+            try {
+                const response = await fetch(AGENT_TELEMETRY_URL, {
+                    method: "GET",
+                    signal: controller.signal,
+                })
+
+                if (!response.ok) {
+                    throw new Error(`Telemetry endpoint responded with HTTP ${response.status}`)
+                }
+
+                const data: unknown = await response.json()
+
+                if (!isTelemetryResponse(data)) {
+                    throw new Error("Agent returned an invalid telemetry response.")
+                }
+
+                if (!cancelled) {
+                    setTelemetry(data)
+                    setMessage(null)
+                }
+            } catch (error: unknown) {
+                if (cancelled || (error instanceof DOMException && error.name === "AbortError")) {
+                    return
+                }
+
+                if (!cancelled) {
+                    setMessage(
+                        error instanceof Error
+                            ? error.message
+                            : "Live telemetry could not be refreshed."
+                    )
+                }
+            } finally {
+                if (telemetryRequestController.current === controller) {
+                    telemetryRequestController.current = null
+                }
+
+                if (!cancelled) {
+                    timeoutId = window.setTimeout(refreshTelemetry, TELEMETRY_INTERVAL_MS)
+                }
+            }
+        }
+
+        refreshTelemetry()
+
+        return () => {
+            cancelled = true
+
+            if (timeoutId !== undefined) {
+                window.clearTimeout(timeoutId)
+            }
+
+            telemetryRequestController.current?.abort()
+            telemetryRequestController.current = null
+        }
+    }, [connectionState])
+
     function disconnectAgent() {
         setConnectionState("disconnecting")
 
         activeRequestController.current?.abort()
         activeRequestController.current = null
 
+        telemetryRequestController.current?.abort()
+        telemetryRequestController.current = null
+
         window.setTimeout(() => {
             setAgent(null)
             setSystem(null)
+            setTelemetry(null)
             setMessage(null)
+
             setConnectionState("disconnected")
         }, 500)
     }
@@ -156,7 +250,7 @@ export default function Agent_Connection() {
                 </div>
             )}
 
-            {system && <System_Overview system={system} />}
+            {system && <System_Overview system={system} telemetry={telemetry} />}
 
             {message && <Paragraph>{message}</Paragraph>}
 

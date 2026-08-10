@@ -19,14 +19,10 @@ class CpuInfo(BaseModel):
     name: str
     physical_cores: int
     logical_cores: int
-    usage_percent: float
 
 
 class MemoryInfo(BaseModel):
     total_bytes: int
-    available_bytes: int
-    used_bytes: int
-    usage_percent: float
 
 
 class SystemResponse(BaseModel):
@@ -35,4 +31,11 @@ class SystemResponse(BaseModel):
     cpu: CpuInfo
     memory: MemoryInfo
     boot_time: float
+
+
+class TelemetryResponse(BaseModel):
+    cpu_usage_percent: float
+    memory_used_bytes: int
+    memory_available_bytes: int
+    memory_usage_percent: float
     uptime_seconds: float

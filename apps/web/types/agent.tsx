@@ -18,17 +18,20 @@ export type SystemResponse = {
         name: string
         physical_cores: number
         logical_cores: number
-        usage_percent: number
     }
 
     memory: {
         total_bytes: number
-        available_bytes: number
-        used_bytes: number
-        usage_percent: number
     }
 
     boot_time: number
+}
+
+export type TelemetryResponse = {
+    cpu_usage_percent: number
+    memory_used_bytes: number
+    memory_available_bytes: number
+    memory_usage_percent: number
     uptime_seconds: number
 }
 
@@ -86,12 +89,23 @@ export function isSystemResponse(data: unknown): data is SystemResponse {
         typeof cpu.name === "string" &&
         typeof cpu.physical_cores === "number" &&
         typeof cpu.logical_cores === "number" &&
-        typeof cpu.usage_percent === "number" &&
         typeof memory.total_bytes === "number" &&
-        typeof memory.available_bytes === "number" &&
-        typeof memory.used_bytes === "number" &&
-        typeof memory.usage_percent === "number" &&
-        typeof record.boot_time === "number" &&
+        typeof record.boot_time === "number"
+    )
+}
+
+export function isTelemetryResponse(data: unknown): data is TelemetryResponse {
+    if (typeof data !== "object" || data === null) {
+        return false
+    }
+
+    const record = data as Record<string, unknown>
+
+    return (
+        typeof record.cpu_usage_percent === "number" &&
+        typeof record.memory_used_bytes === "number" &&
+        typeof record.memory_available_bytes === "number" &&
+        typeof record.memory_usage_percent === "number" &&
         typeof record.uptime_seconds === "number"
     )
 }
