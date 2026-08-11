@@ -223,7 +223,7 @@ Automatisierte defensive Reaktion
 ### Phase 2 — Produktgrundlage
 
 - [ ] englische / deutsche Oberfläche
-- [ ] Dark / Light Theme
+- [x] Dark / Light Theme
 - [ ] gespeicherte UI-Einstellungen
 - [ ] erweiterte Dokumentation
 - [ ] Release-Workflow
