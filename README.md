@@ -223,7 +223,7 @@ Automated Defensive Response
 ### Phase 2 — Product Foundation
 
 - [ ] English / German interface
-- [ ] dark / light themes
+- [x] dark / light themes
 - [ ] persistent UI preferences
 - [ ] improved documentation
 - [ ] release workflow
