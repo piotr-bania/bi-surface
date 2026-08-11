@@ -23,7 +23,7 @@ const REQUEST_TIMEOUT_MS = 5000
 const TELEMETRY_INTERVAL_MS = 1500
 
 export default function Agent_Connection() {
-    const { connectionState, setConnectionState } = useAgentConnection()
+    const { connectionState, setConnectionState, setLastUpdated } = useAgentConnection()
 
     const [agent, setAgent] = useState<HealthResponse | null>(null)
 
@@ -53,6 +53,7 @@ export default function Agent_Connection() {
         setAgent(null)
         setSystem(null)
         setTelemetry(null)
+        setLastUpdated(null)
         setMessage(null)
 
         try {
@@ -159,6 +160,7 @@ export default function Agent_Connection() {
 
                 if (!cancelled) {
                     setTelemetry(data)
+                    setLastUpdated(Date.now())
                     setMessage(null)
                 }
             } catch (error: unknown) {
@@ -196,7 +198,7 @@ export default function Agent_Connection() {
             telemetryRequestController.current?.abort()
             telemetryRequestController.current = null
         }
-    }, [connectionState])
+    }, [connectionState, setLastUpdated])
 
     function disconnectAgent() {
         setConnectionState("disconnecting")
@@ -206,6 +208,7 @@ export default function Agent_Connection() {
 
         telemetryRequestController.current?.abort()
         telemetryRequestController.current = null
+        setLastUpdated(null)
 
         window.setTimeout(() => {
             setAgent(null)

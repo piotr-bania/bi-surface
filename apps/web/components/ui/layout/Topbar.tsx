@@ -2,6 +2,7 @@ import Card from "@/components/ui/cards/Card"
 import Pill from "@/components/ui/pills/Pill"
 import Theme_Switch from "@/components/ui/switchers/Theme_Switch"
 import Agent_Status_Pill from "@/components/system/Agent_Status_Pill"
+import Last_Updated from "@/components/system/Last_Updated"
 
 export default function Topbar() {
     return (
@@ -20,6 +21,9 @@ export default function Topbar() {
                 <Pill title="Host">
                     <span className="paragraph_tiny">localhost (This Machine)</span>
                 </Pill>
+
+                {/* Latest successful telemetry refresh */}
+                <Last_Updated />
 
                 {/* Theme switcher */}
                 <Theme_Switch />

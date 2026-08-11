@@ -66,16 +66,15 @@ $info_glow: rgba($info, 0.6);
 $neutral_glow: rgba($neutral_color, 0.35);
 
 // ---------- Fluid fonts ----------
-$paragraph_tiny: clamp(0.72rem, 0.25vi + 0.66rem, 0.89rem);
-$paragraph_small: clamp(0.8rem, 0.31vi + 0.72rem, 1rem);
-$paragraph: clamp(0.88rem, 0.38vi + 0.78rem, 1.13rem);
-
-$header_6: clamp(0.96rem, 0.47vi + 0.85rem, 1.27rem);
-$header_5: clamp(1.06rem, 0.56vi + 0.92rem, 1.42rem);
-$header_4: clamp(1.16rem, 0.67vi + 1rem, 1.6rem);
-$header_3: clamp(1.28rem, 0.8vi + 1.08rem, 1.8rem);
-$header_2: clamp(1.41rem, 0.95vi + 1.17rem, 2.03rem);
-$header_1: clamp(1.55rem, 1.12vi + 1.27rem, 2.28rem);
+$paragraph_tiny: clamp(0.72rem, -0.04vi + 0.73rem, 0.69rem);
+$paragraph_small: clamp(0.8rem, 0.06vi + 0.78rem, 0.83rem);
+$paragraph: clamp(0.88rem, 0.19vi + 0.83rem, 1rem);
+$header_6: clamp(0.96rem, 0.37vi + 0.87rem, 1.2rem);
+$header_5: clamp(1.06rem, 0.59vi + 0.91rem, 1.44rem);
+$header_4: clamp(1.16rem, 0.87vi + 0.95rem, 1.73rem);
+$header_3: clamp(1.28rem, 1.22vi + 0.98rem, 2.07rem);
+$header_2: clamp(1.41rem, 1.66vi + 0.99rem, 2.49rem);
+$header_1: clamp(1.55rem, 2.21vi + 1rem, 2.99rem);
 
 // ---------- Fluid space ----------
 $small: clamp(1.13rem, calc(1.04rem + 0.41vw), 1.5rem);
