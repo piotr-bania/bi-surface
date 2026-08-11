@@ -11,18 +11,41 @@ $danger: #ef4444;
 $info: #3b82f6;
 $neutral_color: #94a3b8;
 
-// Backgrounds
-$background_color: #0a0f1c;
-$panel_dark_color: #070b14;
-$panel_light_color: #111a2d;
+// Connections
+$connected_color: #22c55e;
+$connecting_color: #3b82f6;
+$disconnected_color: #ef4444;
+$offline_color: #64748b;
+$critical_color: #ef4444;
+$system_color: #94a3b8;
 
-// Typography
-$heading_color: #dbeafe;
-$paragraph_color: #94a3b8;
-$muted_color: #64748b;
-$disabled_color: #475569;
+// ---------- Runtime theme tokens ----------
+:root,
+[data-theme='dark'] {
+    color-scheme: dark;
+    --background: #070b14;
+    --panel-dark: #0a0f1c;
+    --panel-light: #111a2d;
+    --text-heading: #dbeafe;
+    --text-paragraph: #94a3b8;
+    --text-muted: #64748b;
+    --text-disabled: #475569;
+    --border-neutral: rgba(148, 163, 184, 0.2);
+}
 
-// Borders
+[data-theme='light'] {
+    color-scheme: light;
+    --background: #F1F6FB;
+    --panel-dark: #F7FAFD;
+    --panel-light: #ffffff;
+    --text-heading: #0f172a;
+    --text-paragraph: #334155;
+    --text-muted: #64748b;
+    --text-disabled: #94a3b8;
+    --border-neutral: rgba(51, 65, 85, 0.15);
+}
+
+// ---------- Borders ----------
 $primary_border_color: rgba($primary_color, 0.75);
 $secondary_border_color: rgba($secondary_color, 0.75);
 $accent_border_color: rgba($accent_color, 0.75);
@@ -32,15 +55,7 @@ $danger_border_color: rgba($danger, 0.75);
 $info_border_color: rgba($info, 0.75);
 $neutral_border_color: rgba($neutral_color, 0.45);
 
-// Connections
-$connected_color: #22c55e;
-$connecting_color: #3b82f6;
-$disconnected_color: #ef4444;
-$offline_color: #64748b;
-$critical_color: #ef4444;
-$system_color: #94a3b8;
-
-// Glows
+// ---------- Glows ----------
 $primary_glow: rgba($primary_color, 0.6);
 $secondary_glow: rgba($secondary_color, 0.6);
 $accent_glow: rgba($accent_color, 0.6);
@@ -48,11 +63,13 @@ $success_glow: rgba($success, 0.6);
 $warning_glow: rgba($warning, 0.6);
 $danger_glow: rgba($danger, 0.6);
 $info_glow: rgba($info, 0.6);
+$neutral_glow: rgba($neutral_color, 0.35);
 
 // ---------- Fluid fonts ----------
 $paragraph_tiny: clamp(0.72rem, 0.25vi + 0.66rem, 0.89rem);
 $paragraph_small: clamp(0.8rem, 0.31vi + 0.72rem, 1rem);
 $paragraph: clamp(0.88rem, 0.38vi + 0.78rem, 1.13rem);
+
 $header_6: clamp(0.96rem, 0.47vi + 0.85rem, 1.27rem);
 $header_5: clamp(1.06rem, 0.56vi + 0.92rem, 1.42rem);
 $header_4: clamp(1.16rem, 0.67vi + 1rem, 1.6rem);

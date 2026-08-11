@@ -4,7 +4,6 @@ import {
     isHealthResponse,
     isSystemResponse,
     isTelemetryResponse,
-    type ConnectionState,
     type HealthResponse,
     type SystemResponse,
     type TelemetryResponse,
@@ -12,7 +11,7 @@ import {
 
 import { useEffect, useRef, useState } from "react"
 
-import Heading from "@/components/ui/text/Heading"
+import { useAgentConnection } from "@/components/system/Agent_Connection_Context"
 import Paragraph from "@/components/ui/text/Paragraph"
 import System_Overview from "@/components/system/System_Overview"
 
@@ -24,7 +23,7 @@ const REQUEST_TIMEOUT_MS = 5000
 const TELEMETRY_INTERVAL_MS = 1500
 
 export default function Agent_Connection() {
-    const [connectionState, setConnectionState] = useState<ConnectionState>("disconnected")
+    const { connectionState, setConnectionState } = useAgentConnection()
 
     const [agent, setAgent] = useState<HealthResponse | null>(null)
 
@@ -230,14 +229,6 @@ export default function Agent_Connection() {
 
     return (
         <div className="col-span-12 flex flex-col gap-3">
-            <div className="flex flex-col">
-                <Heading as="h1" className="display_font accent_color">
-                    BI Surface Agent
-                </Heading>
-
-                <Paragraph className="primary_color">Explainable Local System Visibility</Paragraph>
-            </div>
-
             <Paragraph>Connection state: {connectionState}</Paragraph>
 
             {agent && (

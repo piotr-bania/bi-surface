@@ -1,15 +1,16 @@
-@use 'sass:color';
 @use './tokens' as *;
 
 /* ---------- Typography variables ---------- */
 @font-face {
     font-family: 'SkylineBeachNbpRegular';
-    src: url('../public/fonts/SkylineBeachNbpRegular-qmrd.ttf');
+    src: url('/fonts/SkylineBeachNbpRegular-qmrd.ttf');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'CascadiaCode';
-    src: url('../public/fonts/CascadiaCode.ttf');
+    src: url('/fonts/CascadiaCode.ttf');
+    font-display: swap;
 }
 
 // Font families
@@ -28,28 +29,22 @@ $font_bold: 700;
 // Font styles
 $font_italic: italic;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--font-heading), ui-sans-serif, system-ui;
-}
-
 /* ---------- Typography styles ---------- */
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
+    margin: 0;
+    padding: 0;
+    color: var(--text-heading);
     font-family: $heading_font;
     font-weight: $font_regular;
-    text-transform: uppercase;
     line-height: 1.1;
-    padding: 0;
-    margin: 0;
+    text-transform: uppercase;
+    transition: color 180ms ease;
 }
 
 h1 {
@@ -77,25 +72,34 @@ h6 {
 }
 
 p {
-    font-size: $paragraph;
-    font-family: $paragraph_font;
-    line-height: 1.4;
     margin: 0;
     padding: 0;
+    color: var(--text-paragraph);
+    font-family: $paragraph_font;
+    font-size: $paragraph;
+    line-height: 1.4;
+    transition: color 180ms ease;
 }
 
 a {
-    font-size: $paragraph;
-    font-family: $button_font;
-    font-weight: $font_medium;
     width: fit-content;
+    color: inherit;
+    font-family: $button_font;
+    font-size: $paragraph;
+    font-weight: $font_medium;
+    text-decoration: none;
     cursor: pointer;
 }
 
-// ---------- Typography classes ----------
+/* ---------- Typography classes ---------- */
+
 .display_font {
     font-family: $display_font;
     text-transform: capitalize;
+}
+
+.paragraph {
+    font-size: $paragraph;
 }
 
 .paragraph_small {
@@ -107,7 +111,7 @@ a {
 }
 
 .button_font {
-    font-family: $paragraph_font;
+    font-family: $button_font;
     font-size: $paragraph_small;
     font-weight: $font_light;
 }
@@ -134,16 +138,4 @@ a {
 
 .header_6 {
     font-size: $header_6;
-}
-
-.paragraph {
-    font-size: $paragraph;
-}
-
-.paragraph_small {
-    font-size: $paragraph_small;
-}
-
-.paragraph_tiny {
-    font-size: $paragraph_tiny;
 }
