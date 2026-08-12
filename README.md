@@ -87,29 +87,29 @@ Current communication flow:
 
 ```text
 ┌──────────────────────────┐
-│      Windows Host        │
-│                          │
-│  Hardware / OS / Memory  │
-│  CPU / Uptime            │
+│      Windows Host             │
+│                               │
+│  Hardware / OS / Memory       │
+│  CPU / Uptime                 │
 └────────────┬─────────────┘
              │
              ▼
 ┌──────────────────────────┐
-│    BI Surface Agent      │
-│                          │
-│  Python                  │
-│  FastAPI                 │
-│  Local telemetry         │
+│    BI Surface Agent           │
+│                               │
+│  Python                       │
+│  FastAPI                      │
+│  Local telemetry              │
 └────────────┬─────────────┘
              │
              │ HTTP / JSON
              ▼
 ┌──────────────────────────┐
-│     BI Surface Web       │
-│                          │
-│  Next.js                 │
-│  TypeScript              │
-│  Live interface          │
+│     BI Surface Web            │
+│                               │
+│  Next.js                      │
+│  TypeScript                   │
+│  Live interface               │
 └──────────────────────────┘
 ```
 
