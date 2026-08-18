@@ -1,11 +1,18 @@
-import time
-import socket
-import psutil
-import platform
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.models import HealthResponse, SystemResponse, TelemetryResponse
+
+from app.collectors import (
+    collect_system,
+    collect_telemetry,
+    collect_processes,
+)
+
+from app.models import (
+    HealthResponse,
+    SystemResponse,
+    TelemetryResponse,
+    ProcessesResponse,
+)
 
 app = FastAPI(
     title="BI Surface Agent",
@@ -37,46 +44,12 @@ def get_health() -> HealthResponse:
 
 @app.get("/api/v1/system", response_model=SystemResponse)
 def get_system() -> SystemResponse:
-    physical_cores = psutil.cpu_count(logical=False)
-    logical_cores = psutil.cpu_count(logical=True)
-
-    memory = psutil.virtual_memory()
-    boot_time = psutil.boot_time()
-
-    return SystemResponse(
-        hostname=socket.gethostname(),
-
-        operating_system={
-            "name": platform.system(),
-            "release": platform.release(),
-            "version": platform.version(),
-            "architecture": platform.machine(),
-        },
-
-        cpu={
-            "name": platform.processor() or "Unknown",
-            "physical_cores": physical_cores or 0,
-            "logical_cores": logical_cores or 0,
-        },
-
-        memory={
-            "total_bytes": memory.total,
-        },
-
-        boot_time=boot_time,
-    )
+    return collect_system()
 
 @app.get("/api/v1/telemetry", response_model=TelemetryResponse)
 def get_telemetry() -> TelemetryResponse:
-    memory = psutil.virtual_memory()
+    return collect_telemetry()
 
-    boot_time = psutil.boot_time()
-    uptime_seconds = time.time() - boot_time
-
-    return TelemetryResponse(
-        cpu_usage_percent=psutil.cpu_percent(interval=None),
-        memory_used_bytes=memory.used,
-        memory_available_bytes=memory.available,
-        memory_usage_percent=memory.percent,
-        uptime_seconds=uptime_seconds,
-    )
+@app.get("/api/v1/processes", response_model=ProcessesResponse)
+def get_processes() -> ProcessesResponse:
+    return collect_processes()
