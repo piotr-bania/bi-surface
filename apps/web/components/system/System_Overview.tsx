@@ -1,6 +1,9 @@
+"use client"
+
 import type { SystemResponse, TelemetryResponse } from "@/types/agent"
 
 import { formatBytes } from "@/helpers/formatBytes"
+import { useLanguage } from "@/i18n/Language_Context"
 import { formatDuration } from "@/helpers/formatDuration"
 
 import Paragraph from "@/components/ui/text/Paragraph"
@@ -11,52 +14,71 @@ type SystemOverviewProps = {
 }
 
 export default function System_Overview({ system, telemetry }: SystemOverviewProps) {
+    const { dictionary } = useLanguage()
+
+    const labels = dictionary.system.overview
+
     return (
         <div className="flex flex-col gap-3">
             <div>
-                <Paragraph>Hostname: {system.hostname}</Paragraph>
-
                 <Paragraph>
-                    Operating system: {system.operating_system.name}{" "}
+                    {labels.hostname}: {system.hostname}
+                </Paragraph>
+                <Paragraph>
+                    {labels.operatingSystem}: {system.operating_system.name}{" "}
                     {system.operating_system.release}
                 </Paragraph>
-
-                <Paragraph>OS version: {system.operating_system.version}</Paragraph>
-
-                <Paragraph>Architecture: {system.operating_system.architecture}</Paragraph>
+                <Paragraph>
+                    {labels.osVersion}: {system.operating_system.version}
+                </Paragraph>
+                <Paragraph>
+                    {labels.architecture}: {system.operating_system.architecture}
+                </Paragraph>
             </div>
 
             <div>
-                <Paragraph>Processor: {system.cpu.name}</Paragraph>
-
-                <Paragraph>Physical cores: {system.cpu.physical_cores}</Paragraph>
-
-                <Paragraph>Logical cores: {system.cpu.logical_cores}</Paragraph>
-
-                {telemetry && <Paragraph>CPU usage: {telemetry.cpu_usage_percent}%</Paragraph>}
+                <Paragraph>
+                    {labels.processor}: {system.cpu.name}
+                </Paragraph>
+                <Paragraph>
+                    {labels.physicalCores}: {system.cpu.physical_cores}
+                </Paragraph>
+                <Paragraph>
+                    {labels.logicalCores}: {system.cpu.logical_cores}
+                </Paragraph>
+                {telemetry && (
+                    <Paragraph>
+                        {labels.cpuUsage}: {telemetry.cpu_usage_percent}%
+                    </Paragraph>
+                )}
             </div>
 
             <div>
-                <Paragraph>Total memory: {formatBytes(system.memory.total_bytes)}</Paragraph>
+                <Paragraph>
+                    {labels.totalMemory}: {formatBytes(system.memory.total_bytes)}
+                </Paragraph>
 
                 {telemetry && (
                     <>
                         <Paragraph>
-                            Used memory: {formatBytes(telemetry.memory_used_bytes)}
+                            {labels.usedMemory}: {formatBytes(telemetry.memory_used_bytes)}
                         </Paragraph>
-
                         <Paragraph>
-                            Available memory: {formatBytes(telemetry.memory_available_bytes)}
+                            {labels.availableMemory}:{" "}
+                            {formatBytes(telemetry.memory_available_bytes)}
                         </Paragraph>
-
-                        <Paragraph>Memory usage: {telemetry.memory_usage_percent}%</Paragraph>
+                        <Paragraph>
+                            {labels.memoryUsage}: {telemetry.memory_usage_percent}%
+                        </Paragraph>
                     </>
                 )}
             </div>
 
             {telemetry && (
                 <div>
-                    <Paragraph>Uptime: {formatDuration(telemetry.uptime_seconds)}</Paragraph>
+                    <Paragraph>
+                        {labels.uptime}: {formatDuration(telemetry.uptime_seconds)}
+                    </Paragraph>
                 </div>
             )}
         </div>

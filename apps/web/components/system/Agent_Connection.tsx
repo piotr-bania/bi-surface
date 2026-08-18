@@ -10,8 +10,9 @@ import {
 } from "@/types/agent"
 
 import { useEffect, useRef, useState } from "react"
-
+import { useLanguage } from "@/i18n/Language_Context"
 import { useAgentConnection } from "@/components/system/Agent_Connection_Context"
+
 import Paragraph from "@/components/ui/text/Paragraph"
 import System_Overview from "@/components/system/System_Overview"
 
@@ -24,18 +25,17 @@ const TELEMETRY_INTERVAL_MS = 1500
 
 export default function Agent_Connection() {
     const { connectionState, setConnectionState, setLastUpdated } = useAgentConnection()
+    const { dictionary } = useLanguage()
 
     const [agent, setAgent] = useState<HealthResponse | null>(null)
-
     const [system, setSystem] = useState<SystemResponse | null>(null)
-
     const [telemetry, setTelemetry] = useState<TelemetryResponse | null>(null)
-
     const [message, setMessage] = useState<string | null>(null)
 
     const activeRequestController = useRef<AbortController | null>(null)
-
     const telemetryRequestController = useRef<AbortController | null>(null)
+
+    const connection = dictionary.system.connection
 
     async function connectAgent() {
         const controller = new AbortController()
@@ -69,7 +69,7 @@ export default function Agent_Connection() {
             const healthData: unknown = await healthResponse.json()
 
             if (!isHealthResponse(healthData)) {
-                throw new Error("Agent returned an invalid health response.")
+                throw new Error(connection.messages.invalidHealth)
             }
 
             const systemResponse = await fetch(AGENT_SYSTEM_URL, {
@@ -84,7 +84,7 @@ export default function Agent_Connection() {
             const systemData: unknown = await systemResponse.json()
 
             if (!isSystemResponse(systemData)) {
-                throw new Error("Agent returned an invalid system response.")
+                throw new Error(connection.messages.invalidSystem)
             }
 
             setAgent(healthData)
@@ -97,8 +97,7 @@ export default function Agent_Connection() {
 
             if (didTimeOut) {
                 setConnectionState("timed_out")
-
-                setMessage("The BI Surface agent did not respond within 5 seconds.")
+                setMessage(connection.messages.timedOut)
 
                 return
             }
@@ -109,17 +108,13 @@ export default function Agent_Connection() {
 
             if (error instanceof TypeError) {
                 setConnectionState("offline")
-
-                setMessage("The BI Surface agent could not be reached.")
+                setMessage(connection.messages.offline)
 
                 return
             }
 
             setConnectionState("error")
-
-            setMessage(
-                error instanceof Error ? error.message : "An unknown connection error occurred."
-            )
+            setMessage(error instanceof Error ? error.message : connection.messages.unknownError)
         } finally {
             window.clearTimeout(timeOutId)
 
@@ -155,7 +150,7 @@ export default function Agent_Connection() {
                 const data: unknown = await response.json()
 
                 if (!isTelemetryResponse(data)) {
-                    throw new Error("Agent returned an invalid telemetry response.")
+                    throw new Error(connection.messages.invalidTelemetry)
                 }
 
                 if (!cancelled) {
@@ -172,7 +167,7 @@ export default function Agent_Connection() {
                     setMessage(
                         error instanceof Error
                             ? error.message
-                            : "Live telemetry could not be refreshed."
+                            : connection.messages.telemetryRefreshFailed
                     )
                 }
             } finally {
@@ -198,7 +193,12 @@ export default function Agent_Connection() {
             telemetryRequestController.current?.abort()
             telemetryRequestController.current = null
         }
-    }, [connectionState, setLastUpdated])
+    }, [
+        connectionState,
+        setLastUpdated,
+        connection.messages.invalidTelemetry,
+        connection.messages.telemetryRefreshFailed,
+    ])
 
     function disconnectAgent() {
         setConnectionState("disconnecting")
@@ -232,15 +232,23 @@ export default function Agent_Connection() {
 
     return (
         <div className="col-span-12 flex flex-col gap-3">
-            <Paragraph>Connection state: {connectionState}</Paragraph>
+            <Paragraph>
+                {connection.label}: {connection.states[connectionState]}
+            </Paragraph>
 
             {agent && (
                 <div>
-                    <Paragraph>Service: {agent.service}</Paragraph>
+                    <Paragraph>
+                        {connection.information.service}: {agent.service}
+                    </Paragraph>
 
-                    <Paragraph>Status: {agent.status}</Paragraph>
+                    <Paragraph>
+                        {connection.information.status}: {agent.status}
+                    </Paragraph>
 
-                    <Paragraph>Version: {agent.version}</Paragraph>
+                    <Paragraph>
+                        {connection.information.version}: {agent.version}
+                    </Paragraph>
                 </div>
             )}
 
@@ -258,10 +266,10 @@ export default function Agent_Connection() {
                     disabled={connectionState === "disconnecting"}
                 >
                     {connectionState === "connecting"
-                        ? "Cancel connection"
+                        ? connection.actions.cancel
                         : connectionState === "disconnecting"
-                          ? "Disconnecting..."
-                          : "Disconnect"}
+                          ? connection.actions.disconnecting
+                          : connection.actions.disconnect}
                 </button>
             ) : (
                 <button
@@ -269,7 +277,7 @@ export default function Agent_Connection() {
                     className={canRetry ? "warning retry" : "primary"}
                     onClick={connectAgent}
                 >
-                    {canRetry ? "Retry connection" : "Connect agent"}
+                    {canRetry ? connection.actions.retry : connection.actions.connect}
                 </button>
             )}
         </div>

@@ -1,8 +1,11 @@
 "use client"
 
-import Pill from "@/components/ui/pills/Pill"
-import { useAgentConnection } from "@/components/system/Agent_Connection_Context"
 import type { ConnectionState } from "@/types/agent"
+
+import { useLanguage } from "@/i18n/Language_Context"
+import { useAgentConnection } from "@/components/system/Agent_Connection_Context"
+
+import Pill from "@/components/ui/pills/Pill"
 
 const statusPresentation: Record<
     ConnectionState,
@@ -47,13 +50,14 @@ const statusPresentation: Record<
 
 export default function Agent_Status_Pill() {
     const { connectionState } = useAgentConnection()
+    const { dictionary } = useLanguage()
+
     const status = statusPresentation[connectionState]
+    const label = dictionary.system.connection.states[connectionState]
 
     return (
-        <Pill title="Agent" showDot dotClassName={status.dotClassName}>
-            <span className={`paragraph_tiny uppercase ${status.colorClassName}`}>
-                {status.label}
-            </span>
+        <Pill title={dictionary.common.agent.title} showDot dotClassName={status.dotClassName}>
+            <span className={`paragraph_tiny uppercase ${status.colorClassName}`}>{label}</span>
         </Pill>
     )
 }

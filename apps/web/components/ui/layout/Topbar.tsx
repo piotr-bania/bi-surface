@@ -1,10 +1,17 @@
+"use client"
+
+import { useLanguage } from "@/i18n/Language_Context"
+
 import Card from "@/components/ui/cards/Card"
 import Pill from "@/components/ui/pills/Pill"
+import Last_Updated from "@/components/system/Last_Updated"
 import Theme_Switch from "@/components/ui/switchers/Theme_Switch"
 import Agent_Status_Pill from "@/components/system/Agent_Status_Pill"
-import Last_Updated from "@/components/system/Last_Updated"
+import Language_Switch from "@/components/ui/switchers/Language_Switch"
 
 export default function Topbar() {
+    const { dictionary } = useLanguage()
+
     return (
         <Card
             topBorder={false}
@@ -18,12 +25,15 @@ export default function Topbar() {
 
             <div className="flex flex-row items-center gap-3">
                 {/* Host information */}
-                <Pill title="Host">
-                    <span className="paragraph_tiny">localhost (This Machine)</span>
+                <Pill title={dictionary.common.host.title}>
+                    <span className="paragraph_tiny">{dictionary.common.host.localMachine}</span>
                 </Pill>
 
                 {/* Latest successful telemetry refresh */}
                 <Last_Updated />
+
+                {/* Language switcher */}
+                <Language_Switch />
 
                 {/* Theme switcher */}
                 <Theme_Switch />
