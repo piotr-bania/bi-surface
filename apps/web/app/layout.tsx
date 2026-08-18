@@ -1,9 +1,11 @@
 import "./globals.css"
 import "./globals.scss"
 
+import { Language_Provider } from "@/i18n/Language_Context"
+import { Agent_Connection_Provider } from "@/components/system/Agent_Connection_Context"
+
 import Topbar from "@/components/ui/layout/Topbar"
 import Sidebar from "@/components/ui/layout/Sidebar"
-import { Agent_Connection_Provider } from "@/components/system/Agent_Connection_Context"
 
 export default function RootLayout({
     children,
@@ -13,11 +15,13 @@ export default function RootLayout({
     return (
         <html lang="en" data-theme="dark" suppressHydrationWarning={true}>
             <body suppressHydrationWarning={true}>
-                <Agent_Connection_Provider>
-                    <Sidebar />
-                    <Topbar />
-                    {children}
-                </Agent_Connection_Provider>
+                <Language_Provider>
+                    <Agent_Connection_Provider>
+                        <Sidebar />
+                        <Topbar />
+                        {children}
+                    </Agent_Connection_Provider>
+                </Language_Provider>
             </body>
         </html>
     )

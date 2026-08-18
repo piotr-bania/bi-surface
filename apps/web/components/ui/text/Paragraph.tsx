@@ -7,12 +7,10 @@ import { animate, motion as m, useMotionValue, type Variants } from "motion/reac
 
 export default function Paragraph({ text, children, className }: AnimatedTextProps) {
     const entryOpacity = useMotionValue(0)
-
     const content = children ?? text
 
     useEffect(() => {
         const transition = paragraph_variant.visible.transition
-
         const controls = animate(entryOpacity, 1, {
             duration: transition.duration,
             delay: transition.delay,
