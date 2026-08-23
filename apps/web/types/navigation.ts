@@ -60,12 +60,13 @@ export type SidebarRouteOverrides = Partial<Record<SidebarRouteId, SidebarRouteO
 
 export type SidebarNavigationItemProps = {
     route: SidebarRouteDefinition
-    label: string
     state: SidebarItemState
+    label: string
     badge?: string
     disabledReason?: string
-    collapsed?: boolean
+    elevationLabel?: string
     onNavigate?: () => void
+    collapsed?: boolean
 }
 
 export type SidebarNavigationDictionary = {
