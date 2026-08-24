@@ -59,4 +59,37 @@ export const system: TranslationDictionary["system"] = {
 
         uptime: "Betriebszeit",
     },
+
+    agentStatus: {
+        title: "Agent-Status",
+
+        states: {
+            disconnected: "Offline",
+            connecting: "Verbindung wird hergestellt",
+            connected: "Online",
+            disconnecting: "Verbindung wird getrennt",
+            offline: "Offline",
+            timed_out: "Zeitüberschreitung",
+            error: "Fehler",
+        },
+
+        health: {
+            healthy: "Agent arbeitet fehlerfrei",
+            waiting: "Warten auf den Agent",
+            unavailable: "Agent nicht verfügbar",
+        },
+
+        labels: {
+            pid: "Agent-PID",
+            telemetry: "Telemetrie",
+        },
+
+        telemetry: {
+            active: "Aktiv",
+            waiting: "Wartet",
+            inactive: "Inaktiv",
+        },
+
+        unavailable: "Nicht verfügbar",
+    },
 }

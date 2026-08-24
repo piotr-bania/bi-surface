@@ -1,10 +1,6 @@
 "use client"
 
-import type {
-    AgentHealthState,
-    HostMonitoringState,
-    HostPostureData,
-} from "@/types/routes/dashboard"
+import type { HostPostureData } from "@/types/routes/dashboard"
 
 import {
     PiCpuDuotone,
@@ -13,74 +9,15 @@ import {
     PiMonitorDuotone,
 } from "react-icons/pi"
 import { useLanguage } from "@/i18n/Language_Context"
+import { monitoringStyles } from "@/lib/dashboard/monitoringStyles"
+import { agentHealthStyles } from "@/lib/dashboard/agentHealthStyles"
 
-import Section_Frame from "@/components/ui/frames/Section_Frame"
 import Paragraph from "@/components/ui/text/Paragraph"
+import Section_Frame from "@/components/ui/frames/Section_Frame"
 
 type Host_Posture_Props = {
     data: HostPostureData
     className?: string
-}
-
-const monitoringStyles: Record<
-    HostMonitoringState,
-    {
-        text: string
-        border: string
-        glow: string
-    }
-> = {
-    monitored: {
-        text: "success",
-        border: "success_border_color",
-        glow: "success_glow",
-    },
-
-    partial: {
-        text: "warning",
-        border: "warning_border_color",
-        glow: "warning_glow",
-    },
-
-    offline: {
-        text: "danger",
-        border: "danger_border_color",
-        glow: "danger_glow",
-    },
-
-    unknown: {
-        text: "muted_color",
-        border: "neutral_border_color",
-        glow: "",
-    },
-}
-
-const agentHealthStyles: Record<
-    AgentHealthState,
-    {
-        text: string
-        dot: string
-    }
-> = {
-    healthy: {
-        text: "success",
-        dot: "connected_background_color",
-    },
-
-    degraded: {
-        text: "warning",
-        dot: "bg-[#f59e0b]",
-    },
-
-    unavailable: {
-        text: "danger",
-        dot: "bg-[#ef4444]",
-    },
-
-    unknown: {
-        text: "muted_color",
-        dot: "bg-[var(--text-muted)]",
-    },
 }
 
 function formatUptime(uptimeSeconds: number | null, unavailable: string): string {
@@ -89,15 +26,10 @@ function formatUptime(uptimeSeconds: number | null, unavailable: string): string
     }
 
     const totalSeconds = Math.max(0, Math.floor(uptimeSeconds))
-
     const days = Math.floor(totalSeconds / 86_400)
-
     const hours = Math.floor((totalSeconds % 86_400) / 3_600)
-
     const minutes = Math.floor((totalSeconds % 3_600) / 60)
-
     const seconds = totalSeconds % 60
-
     const time = [hours, minutes, seconds].map((value) => String(value).padStart(2, "0")).join(":")
 
     return days > 0 ? `${days}d ${time}` : time
@@ -133,11 +65,8 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
     const { language, dictionary } = useLanguage()
 
     const copy = dictionary.dashboard.hostPosture
-
     const monitoringStyle = monitoringStyles[data.monitoringState]
-
     const agentHealthStyle = agentHealthStyles[data.agentHealth]
-
     const operatingSystem = [data.operatingSystem, data.osVersion].filter(Boolean).join(" · ")
 
     return (
@@ -147,7 +76,7 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
             className={className}
             contentClassName="px-4 pb-4 pt-3"
         >
-            <div className="grid grid-cols-1 items-center gap-5 md:grid-cols-[160px_1fr]">
+            <div className="flex flex-row items-center justify-between gap-3">
                 <div className="flex justify-center">
                     <div
                         className={`relative flex size-36 items-center justify-center rounded-full border-2 ${monitoringStyle.border} ${monitoringStyle.glow}`}

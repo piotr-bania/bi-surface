@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -40,6 +42,7 @@ def get_health() -> HealthResponse:
         status="online",
         service="BI Surface Agent",
         version="0.1.0",
+        pid=os.getpid(),
     )
 
 @app.get("/api/v1/system", response_model=SystemResponse)

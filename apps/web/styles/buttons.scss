@@ -318,6 +318,17 @@ button,
 .sidebar-button {
     isolation: isolate;
 
+    &[aria-current='page'] {
+        background:
+            linear-gradient(
+                180deg,
+                rgba($primary_color, 0.1) 0%,
+                rgba($primary_color, 0.035) 55%,
+                rgba($primary_color, 0.08) 100%
+            ),
+            var(--panel-dark);
+    }
+
     &::after {
         content: '';
         position: absolute;

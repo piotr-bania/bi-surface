@@ -57,4 +57,37 @@ export const system = {
 
         uptime: "Uptime",
     },
+
+    agentStatus: {
+        title: "Agent status",
+
+        states: {
+            disconnected: "Offline",
+            connecting: "Connecting",
+            connected: "Online",
+            disconnecting: "Disconnecting",
+            offline: "Offline",
+            timed_out: "Timed out",
+            error: "Error",
+        },
+
+        health: {
+            healthy: "Agent healthy",
+            waiting: "Waiting for agent",
+            unavailable: "Agent unavailable",
+        },
+
+        labels: {
+            pid: "Agent PID",
+            telemetry: "Telemetry",
+        },
+
+        telemetry: {
+            active: "Active",
+            waiting: "Waiting",
+            inactive: "Inactive",
+        },
+
+        unavailable: "Unavailable",
+    },
 }

@@ -23,7 +23,7 @@ export default function Card({
 
     return (
         <div
-            className={`${borderClasses} ${background ? "bg-[var(--panel-dark)]" : "bg-transparent"} ${className}`}
+            className={`gap-3 p-3 ${borderClasses} ${background ? "bg-[var(--panel-dark)]" : "bg-transparent"} ${className}`}
         >
             {children}
         </div>

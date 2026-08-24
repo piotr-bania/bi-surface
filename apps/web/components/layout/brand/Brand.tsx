@@ -22,7 +22,7 @@ export default function Brand({ className }: BrandProps) {
 
             <Paragraph
                 text={dictionary.common.brand.tagline}
-                className="paragraph_tiny primary_color leading-none"
+                className="primary_color leading-none"
             />
         </div>
     )

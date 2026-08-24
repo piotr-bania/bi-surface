@@ -5,3 +5,4 @@ class HealthResponse(BaseModel):
     status: Literal["online"]
     service: str
     version: str
+    pid: int

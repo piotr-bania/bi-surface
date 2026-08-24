@@ -2,6 +2,7 @@ export type HealthResponse = {
     status: "online"
     service: string
     version: string
+    pid: number
 }
 
 export type SystemResponse = {
@@ -83,7 +84,8 @@ export function isHealthResponse(data: unknown): data is HealthResponse {
     return (
         record.status === "online" &&
         typeof record.service === "string" &&
-        typeof record.version === "string"
+        typeof record.version === "string" &&
+        typeof record.pid === "number"
     )
 }
 

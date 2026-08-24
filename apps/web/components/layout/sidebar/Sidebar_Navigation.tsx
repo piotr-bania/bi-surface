@@ -14,7 +14,7 @@ import { sidebarRoutes } from "@/lib/navigation/sidebarRoutes"
 import { isSidebarRouteActive } from "@/lib/navigation/isSidebarRouteActive"
 
 import Paragraph from "@/components/ui/text/Paragraph"
-import Sidebar_Navigation_Item from "./Sidebar_Navigation_Item"
+import Sidebar_Navigation_Item from "@/components/layout/sidebar/Sidebar_Navigation_Item"
 
 const groupOrder: readonly SidebarRouteGroup[] = ["telemetry", "analysis", "configuration"]
 
@@ -72,14 +72,14 @@ export default function Sidebar_Navigation({
                     <div
                         key={group}
                         aria-labelledby={`sidebar-group-${group}`}
-                        className="mb-4 last:mb-0"
+                        className="mb-4 flex flex-col gap-2 last:mb-0"
                     >
                         {!collapsed && (
                             <Paragraph
                                 id={`sidebar-group-${group}`}
-                                className="paragraph_tiny muted_color mb-1 px-3 uppercase tracking-[0.12em]"
+                                className="paragraph_small px-3 uppercase"
                             >
-                                {groupLabel}
+                                <span className="px-3">{groupLabel}</span>
                             </Paragraph>
                         )}
 
