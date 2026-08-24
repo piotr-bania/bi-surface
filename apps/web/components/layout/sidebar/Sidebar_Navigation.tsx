@@ -72,7 +72,7 @@ export default function Sidebar_Navigation({
                     <div
                         key={group}
                         aria-labelledby={`sidebar-group-${group}`}
-                        className="mb-4 flex flex-col gap-2 last:mb-0"
+                        className="mb-3 flex flex-col gap-2 last:mb-0"
                     >
                         {!collapsed && (
                             <Paragraph

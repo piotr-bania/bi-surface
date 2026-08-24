@@ -10,7 +10,6 @@ export const dashboard: DashboardDictionary = {
     hostPosture: {
         frameNumber: "1.",
         title: "Host-Status",
-
         labels: {
             hostname: "Hostname",
             operatingSystem: "Betriebssystem",
@@ -20,21 +19,66 @@ export const dashboard: DashboardDictionary = {
             memory: "Arbeitsspeicher",
             processes: "Prozesse",
         },
-
         monitoringStates: {
             monitored: "Überwacht",
             partial: "Teilweise",
             offline: "Offline",
             unknown: "Unbekannt",
         },
-
         agentHealthStates: {
             healthy: "Fehlerfrei",
             degraded: "Beeinträchtigt",
             unavailable: "Nicht verfügbar",
             unknown: "Unbekannt",
         },
-
         unavailable: "Nicht verfügbar",
+    },
+
+    visibilityCoverage: {
+        frameNumber: "2.",
+        title: "Sichtbarkeitsabdeckung",
+        summary: {
+            overall: "Kollektoren",
+            visible: "Aktiv",
+        },
+        sources: {
+            processes: "Prozesse",
+            network: "Netzwerk",
+            services: "Dienste",
+            files: "Dateien",
+            registry: "Registrierung",
+        },
+        states: {
+            full: "Vollständig",
+            partial: "Teilweise",
+            limited: "Begrenzt",
+            locked: "Gesperrt",
+            planned: "Geplant",
+            unavailable: "Nicht verfügbar",
+        },
+        requiresElevation: "Erhöhte Rechte erforderlich",
+        unavailable: "Nicht verfügbar",
+    },
+
+    investigationQueue: {
+        frameNumber: "3.",
+        title: "Untersuchungs-Queue",
+        metrics: {
+            critical: "Kritisch",
+            high: "Hoch",
+            warning: "Warnung",
+            reviewed: "Geprüft",
+        },
+        table: {
+            priorityItem: "Prioritätseintrag",
+            firstSeen: "Erstmals erkannt",
+            age: "Alter",
+        },
+        states: {
+            loading: "Untersuchungs-Queue wird geladen",
+            empty: "Derzeit sind keine Untersuchungen erforderlich",
+            unavailable: "Die Erkennungspipeline ist nicht aktiv",
+        },
+        viewAll: "Alle Queue-Einträge anzeigen",
     },
 }

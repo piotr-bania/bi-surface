@@ -5,7 +5,7 @@ import { PiLockKeyDuotone } from "react-icons/pi"
 import Link from "next/link"
 
 const baseClasses =
-    "group relative isolate flex min-h-12 items-center gap-3 overflow-hidden border py-2 text-left transition-[color,background-color,border-color,opacity,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#21d4ff] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-dark)]"
+    "group relative isolate flex min-h-[36px] items-center gap-3 overflow-hidden border rounded-sm py-2 text-left transition-[color,background-color,border-color,opacity,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#21d4ff] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-dark)]"
 
 const stateClasses = {
     active: "primary_color primary_border_color panel_light_color shadow-[inset_0_0_16px_rgba(33,212,255,0.05),0_0_10px_rgba(33,212,255,0.08)]",

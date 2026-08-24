@@ -11,12 +11,13 @@ type Sidebar_Props = {
 
 export default function Sidebar({ routeOverrides }: Sidebar_Props) {
     return (
-        <aside aria-label="BI Surface" className="h-[calc(100dvh-4rem)] w-[264px] shrink-0">
+        <aside aria-label="BI Surface" className="h-[calc(100dvh-3rem)] w-[264px] shrink-0">
             <Card
                 topBorder={false}
                 rightBorder
                 bottomBorder={false}
                 leftBorder={false}
+                rounded={false}
                 className="flex h-full w-full flex-col"
             >
                 <Brand className="px-3" />

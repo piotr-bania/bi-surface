@@ -10,7 +10,6 @@ export const dashboard: DashboardDictionary = {
     hostPosture: {
         frameNumber: "1.",
         title: "Host Posture",
-
         labels: {
             hostname: "Hostname",
             operatingSystem: "OS",
@@ -20,21 +19,66 @@ export const dashboard: DashboardDictionary = {
             memory: "Memory",
             processes: "Processes",
         },
-
         monitoringStates: {
             monitored: "Monitored",
             partial: "Partial",
             offline: "Offline",
             unknown: "Unknown",
         },
-
         agentHealthStates: {
             healthy: "Healthy",
             degraded: "Degraded",
             unavailable: "Unavailable",
             unknown: "Unknown",
         },
-
         unavailable: "Unavailable",
+    },
+
+    visibilityCoverage: {
+        frameNumber: "2.",
+        title: "Visibility Coverage",
+        summary: {
+            overall: "Collectors",
+            visible: "Active",
+        },
+        sources: {
+            processes: "Processes",
+            network: "Network",
+            services: "Services",
+            files: "Files",
+            registry: "Registry",
+        },
+        states: {
+            full: "Full",
+            partial: "Partial",
+            limited: "Limited",
+            locked: "Locked",
+            planned: "Planned",
+            unavailable: "Unavailable",
+        },
+        requiresElevation: "Requires elevation",
+        unavailable: "Unavailable",
+    },
+
+    investigationQueue: {
+        frameNumber: "3.",
+        title: "Investigation Queue",
+        metrics: {
+            critical: "Critical",
+            high: "High",
+            warning: "Warning",
+            reviewed: "Reviewed",
+        },
+        table: {
+            priorityItem: "Priority item",
+            firstSeen: "First seen",
+            age: "Age",
+        },
+        states: {
+            loading: "Loading investigation queue",
+            empty: "No investigations currently require attention",
+            unavailable: "The detection pipeline is not active",
+        },
+        viewAll: "View all queue items",
     },
 }

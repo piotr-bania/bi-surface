@@ -15,22 +15,23 @@ export default function Section_Frame({
     number,
     title,
     children,
+    className = "",
     contentClassName = "p-4 pt-3",
     headerRight,
 }: Section_Frame_Props) {
     const accessibleTitle = number ? `${number} ${title}` : title
 
     return (
-        <section
+        <div
             aria-label={accessibleTitle}
-            className="relative border accent_border_color bg-[var(--panel-dark)]"
+            className={`relative flex flex-col gap-0 rounded-sm border border-[var(--border-neutral)] bg-[var(--panel-dark)] p-0 ${className}`}
         >
             <span
                 aria-hidden="true"
-                className="absolute right-2 top-2 size-3 border-r border-t accent_border_color"
+                className="absolute right-2 top-2 size-3 border-r border-t border-[var(--border-neutral)]"
             />
 
-            <header className="flex min-h-10 items-center justify-between gap-4 px-4 pt-2 pr-8">
+            <header className="flex min-h-10 items-center justify-between gap-4 px-4 pt-3 pr-8">
                 <Heading as="h2" className="header_6 secondary_color flex items-center gap-2">
                     {number && <span aria-hidden="true">{number}</span>}
                     <span>{title}</span>
@@ -40,6 +41,6 @@ export default function Section_Frame({
             </header>
 
             <div className={contentClassName}>{children}</div>
-        </section>
+        </div>
     )
 }

@@ -61,6 +61,10 @@ function formatCount(value: number | null, language: "en" | "de", unavailable: s
     return Math.max(0, Math.floor(value)).toLocaleString(locale)
 }
 
+function hasNumericValue(value: number | null): value is number {
+    return value !== null && Number.isFinite(value)
+}
+
 export default function Host_Posture({ data, className = "" }: Host_Posture_Props) {
     const { language, dictionary } = useLanguage()
 
@@ -76,8 +80,8 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
             className={className}
             contentClassName="px-4 pb-4 pt-3"
         >
-            <div className="flex flex-row items-center justify-between gap-3">
-                <div className="flex justify-center">
+            <div className="flex w-full flex-col items-center justify-between gap-5 md:flex-row">
+                <div className="flex justify-center md:flex-1">
                     <div
                         className={`relative flex size-36 items-center justify-center rounded-full border-2 ${monitoringStyle.border} ${monitoringStyle.glow}`}
                     >
@@ -86,8 +90,8 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
                             className={`absolute -inset-2 rounded-full border border-dashed ${monitoringStyle.border} opacity-50`}
                         />
 
-                        <div className={`flex flex-col items-center gap-2 ${monitoringStyle.text}`}>
-                            <PiMonitorDuotone aria-hidden="true" className="size-12" />
+                        <div className={`flex flex-col items-center ${monitoringStyle.text}`}>
+                            <PiMonitorDuotone aria-hidden="true" className="size-18" />
 
                             <span className="paragraph_small uppercase">
                                 {copy.monitoringStates[data.monitoringState]}
@@ -96,26 +100,26 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
                     </div>
                 </div>
 
-                <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-2">
-                    <dt className="paragraph_small muted_color">{copy.labels.hostname}</dt>
+                <dl className="grid w-full grid-cols-[auto_1fr] gap-x-5 gap-y-2 md:flex-2">
+                    <dt className="paragraph_small">{copy.labels.hostname}</dt>
 
                     <dd className="paragraph_small heading_color">
                         {data.hostname ?? copy.unavailable}
                     </dd>
 
-                    <dt className="paragraph_small muted_color">{copy.labels.operatingSystem}</dt>
+                    <dt className="paragraph_small">{copy.labels.operatingSystem}</dt>
 
                     <dd className="paragraph_small heading_color">
                         {operatingSystem || copy.unavailable}
                     </dd>
 
-                    <dt className="paragraph_small muted_color">{copy.labels.uptime}</dt>
+                    <dt className="paragraph_small">{copy.labels.uptime}</dt>
 
                     <dd className="paragraph_small heading_color">
                         {formatUptime(data.uptimeSeconds, copy.unavailable)}
                     </dd>
 
-                    <dt className="paragraph_small muted_color">{copy.labels.agentStatus}</dt>
+                    <dt className="paragraph_small">{copy.labels.agentStatus}</dt>
 
                     <dd
                         className={`paragraph_small flex items-center gap-2 ${agentHealthStyle.text}`}
@@ -130,47 +134,53 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
                 </dl>
             </div>
 
-            <div className="mt-5 grid grid-cols-1 border-t border-[var(--border-neutral)] pt-4 sm:grid-cols-3">
-                <div className="flex items-center gap-3 border-b border-[var(--border-neutral)] py-3 sm:border-b-0 sm:border-r sm:py-0">
+            <div className="mt-5 flex w-full flex-col border-t border-[var(--border-neutral)] pt-4 sm:flex-row sm:items-stretch">
+                <div className="flex min-w-0 flex-1 items-center justify-start gap-3 border-b border-[var(--border-neutral)] pb-3 sm:border-r sm:border-b-0 sm:pr-4 sm:pb-0">
                     <PiCpuDuotone aria-hidden="true" className="primary_color size-7 shrink-0" />
 
                     <div>
-                        <Paragraph className="paragraph_tiny muted_color">
-                            {copy.labels.cpu}
-                        </Paragraph>
+                        <Paragraph className="paragraph_tiny">{copy.labels.cpu}</Paragraph>
 
-                        <Paragraph className="header_6 primary_color">
+                        <Paragraph
+                            className={`${
+                                hasNumericValue(data.cpuPercent) ? "header_6" : "paragraph_small"
+                            } primary_color whitespace-nowrap tabular-nums`}
+                        >
                             {formatPercentage(data.cpuPercent, language, copy.unavailable)}
                         </Paragraph>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 border-b border-[var(--border-neutral)] py-3 sm:border-b-0 sm:border-r sm:px-4 sm:py-0">
+                <div className="flex min-w-0 flex-1 items-center justify-start gap-3 border-b border-[var(--border-neutral)] py-3 sm:border-r sm:border-b-0 sm:px-4 sm:py-0">
                     <PiMemoryDuotone aria-hidden="true" className="accent_color size-7 shrink-0" />
 
                     <div>
-                        <Paragraph className="paragraph_tiny muted_color">
-                            {copy.labels.memory}
-                        </Paragraph>
+                        <Paragraph className="paragraph_tiny">{copy.labels.memory}</Paragraph>
 
-                        <Paragraph className="header_6 accent_color">
+                        <Paragraph
+                            className={`${
+                                hasNumericValue(data.memoryPercent) ? "header_6" : "paragraph_small"
+                            } accent_color whitespace-nowrap tabular-nums`}
+                        >
                             {formatPercentage(data.memoryPercent, language, copy.unavailable)}
                         </Paragraph>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 pt-3 sm:px-4 sm:pt-0">
+                <div className="flex min-w-0 flex-1 items-center justify-start gap-3 pt-3 sm:pt-0 sm:pl-4">
                     <PiListBulletsDuotone
                         aria-hidden="true"
                         className="secondary_color size-7 shrink-0"
                     />
 
                     <div>
-                        <Paragraph className="paragraph_tiny muted_color">
-                            {copy.labels.processes}
-                        </Paragraph>
+                        <Paragraph className="paragraph_tiny">{copy.labels.processes}</Paragraph>
 
-                        <Paragraph className="header_6 secondary_color">
+                        <Paragraph
+                            className={`${
+                                hasNumericValue(data.processCount) ? "header_6" : "paragraph_small"
+                            } secondary_color whitespace-nowrap tabular-nums`}
+                        >
                             {formatCount(data.processCount, language, copy.unavailable)}
                         </Paragraph>
                     </div>

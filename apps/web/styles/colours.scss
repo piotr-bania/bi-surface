@@ -34,6 +34,26 @@
     color: $neutral_color;
 }
 
+.success_background_color {
+    background-color: $success;
+}
+
+.warning_background_color {
+    background-color: $warning;
+}
+
+.danger_background_color {
+    background-color: $danger;
+}
+
+.info_background_color {
+    background-color: $info;
+}
+
+.neutral_background_color {
+    background-color: $neutral_color;
+}
+
 // ---------- Backgrounds ----------
 .background_color {
     background-color: var(--background);
