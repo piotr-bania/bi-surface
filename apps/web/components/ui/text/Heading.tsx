@@ -34,7 +34,7 @@ const motionHeadingMap = {
     h6: m.h6,
 }
 
-export default function Heading({ as = "h2", text, children, className }: HeadingProps) {
+export default function Heading({ as = "h2", id, text, children, className }: HeadingProps) {
     const [isPresent, safeToRemove] = usePresence()
 
     const entryOpacity = useMotionValue(0)
@@ -103,6 +103,7 @@ export default function Heading({ as = "h2", text, children, className }: Headin
 
     return (
         <Tag
+            id={id}
             initial="hidden"
             animate="visible"
             exit="exit"

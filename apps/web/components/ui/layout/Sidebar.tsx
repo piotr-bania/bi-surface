@@ -16,7 +16,7 @@ export default function Sidebar({ routeOverrides }: Sidebar_Props) {
                 rightBorder
                 bottomBorder={false}
                 leftBorder={false}
-                className={["flex", "h-full", "w-full", "flex-col", "gap-5", "p-3"].join(" ")}
+                className="flex h-full w-full flex-col gap-5 p-3"
             >
                 <Brand />
 

@@ -67,6 +67,7 @@ export type SidebarNavigationItemProps = {
     elevationLabel?: string
     onNavigate?: () => void
     collapsed?: boolean
+    fullWidth?: boolean
 }
 
 export type SidebarNavigationDictionary = {

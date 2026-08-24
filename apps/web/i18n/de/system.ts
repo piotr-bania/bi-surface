@@ -36,6 +36,8 @@ export const system: TranslationDictionary["system"] = {
             invalidSystem: "Der Agent hat eine ungültige Systemantwort zurückgegeben.",
             invalidTelemetry: "Der Agent hat eine ungültige Telemetrieantwort zurückgegeben.",
             telemetryRefreshFailed: "Die Live-Telemetrie konnte nicht aktualisiert werden.",
+            invalidProcesses: "Agent returned an invalid processes response.",
+            processesRefreshFailed: "Process visibility could not be refreshed.",
         },
     },
 

@@ -13,6 +13,7 @@ import { useLanguage } from "@/i18n/Language_Context"
 import { sidebarRoutes } from "@/lib/navigation/sidebarRoutes"
 import { isSidebarRouteActive } from "@/lib/navigation/isSidebarRouteActive"
 
+import Paragraph from "@/components/ui/text/Paragraph"
 import Sidebar_Navigation_Item from "./Sidebar_Navigation_Item"
 
 const groupOrder: readonly SidebarRouteGroup[] = ["telemetry", "analysis", "configuration"]
@@ -74,19 +75,12 @@ export default function Sidebar_Navigation({
                         className="mb-4 last:mb-0"
                     >
                         {!collapsed && (
-                            <p
+                            <Paragraph
                                 id={`sidebar-group-${group}`}
-                                className={[
-                                    "paragraph_tiny",
-                                    "muted_color",
-                                    "mb-1",
-                                    "px-3",
-                                    "uppercase",
-                                    "tracking-[0.12em]",
-                                ].join(" ")}
+                                className="paragraph_tiny muted_color mb-1 px-3 uppercase tracking-[0.12em]"
                             >
                                 {groupLabel}
-                            </p>
+                            </Paragraph>
                         )}
 
                         <ul className="flex flex-col gap-1">
@@ -97,11 +91,9 @@ export default function Sidebar_Navigation({
                                     : isSidebarRouteActive(pathname, route)
                                       ? "active"
                                       : "inactive"
-                                const badge = route.flags.comingSoon
-                                    ? dictionary.navigation.states.comingSoon
-                                    : route.flags.beta
-                                      ? dictionary.navigation.states.beta
-                                      : undefined
+                                const badge = route.flags.beta
+                                    ? dictionary.navigation.states.beta
+                                    : undefined
                                 const disabledReason =
                                     override?.disabledReason ??
                                     dictionary.navigation.states.disabled
@@ -118,6 +110,7 @@ export default function Sidebar_Navigation({
                                                 dictionary.navigation.states.requiresElevation
                                             }
                                             collapsed={collapsed}
+                                            fullWidth
                                             onNavigate={onNavigate}
                                         />
                                     </li>

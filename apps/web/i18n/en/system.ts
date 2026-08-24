@@ -34,6 +34,8 @@ export const system = {
             invalidSystem: "Agent returned an invalid system response.",
             invalidTelemetry: "Agent returned an invalid telemetry response.",
             telemetryRefreshFailed: "Live telemetry could not be refreshed.",
+            invalidProcesses: "Der Agent hat eine ungültige Prozessantwort zurückgegeben.",
+            processesRefreshFailed: "Die Prozesssichtbarkeit konnte nicht aktualisiert werden.",
         },
     },
 

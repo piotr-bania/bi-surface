@@ -5,7 +5,7 @@ import type { AnimatedTextProps } from "@/types/text"
 import { paragraph_variant } from "@/animations/Text_Variants"
 import { animate, motion as m, useMotionValue, type Variants } from "motion/react"
 
-export default function Paragraph({ text, children, className }: AnimatedTextProps) {
+export default function Paragraph({ id, text, children, className }: AnimatedTextProps) {
     const entryOpacity = useMotionValue(0)
     const content = children ?? text
 
@@ -37,6 +37,7 @@ export default function Paragraph({ text, children, className }: AnimatedTextPro
 
     return (
         <m.p
+            id={id}
             initial="hidden"
             animate="visible"
             variants={yVariant}
