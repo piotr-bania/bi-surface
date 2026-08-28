@@ -49,6 +49,12 @@ export const processes: ProcessesDictionary = {
             state: "Status",
             visibility: "Sichtbarkeit",
         },
+
+        pagination: {
+            showing: "Zeige",
+            of: "von",
+            processes: "Prozessen",
+        },
     },
 
     selectedProcess: {
