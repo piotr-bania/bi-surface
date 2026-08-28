@@ -15,12 +15,14 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" data-theme="dark" suppressHydrationWarning={true}>
-            <body suppressHydrationWarning={true}>
+            <body className="h-dvh overflow-hidden" suppressHydrationWarning={true}>
                 <Language_Provider>
                     <Agent_Connection_Provider>
                         <Topbar />
                         <Sidebar />
-                        {children}
+                        <main className="fixed left-[264px] right-0 top-16 bottom-12 w-[calc(100%-264px)] overflow-y-auto overflow-x-hidden">
+                            {children}
+                        </main>
                         <Footer />
                     </Agent_Connection_Provider>
                 </Language_Provider>

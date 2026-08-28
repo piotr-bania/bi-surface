@@ -28,4 +28,12 @@ export const common: TranslationDictionary["common"] = {
         minutesAgo: "Min. zuvor",
         hoursAgo: "Std. zuvor",
     },
+
+    footer: {
+        telemetry: "Alle Telemetriedaten werden lokal erfasst und verarbeitet.",
+        statement: "Erklärbar. Lokal. Transparent.",
+        docs: "Dokumentation",
+        github: "GitHub",
+        reportIssue: "Problem melden",
+    },
 }

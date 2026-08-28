@@ -19,7 +19,7 @@ export default function Topbar() {
             bottomBorder
             leftBorder={false}
             rounded={false}
-            className="absolute left-[264px] top-0 w-[calc(100%-264px)] h-16 flex flex-row items-center justify-between gap-3 p-3"
+            className="fixed left-[264px] top-0 w-[calc(100%-264px)] h-16 flex flex-row items-center justify-between gap-3 p-3 z-50"
         >
             {/* Agent connection status */}
             <Agent_Status_Pill />

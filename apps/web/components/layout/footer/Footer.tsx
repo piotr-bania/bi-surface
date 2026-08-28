@@ -1,8 +1,16 @@
-import packageJson from "@/package.json"
+"use client"
+
+import { useLanguage } from "@/i18n/Language_Context"
+import { PiBookOpenTextDuotone, PiGithubLogoDuotone, PiInfoDuotone } from "react-icons/pi"
+
 import Card from "@/components/ui/cards/Card"
 import Paragraph from "@/components/ui/text/Paragraph"
 
 export default function Footer() {
+    const { dictionary } = useLanguage()
+
+    const copy = dictionary.common.footer
+
     return (
         <Card
             topBorder
@@ -10,44 +18,36 @@ export default function Footer() {
             bottomBorder={false}
             leftBorder={false}
             rounded={false}
-            className="flex h-12 w-full items-center gap-0! p-0!"
+            className="fixed bottom-0 left-[264px] z-50 flex h-12 w-[calc(100%-264px)] items-center gap-0! p-0!"
         >
-            {/* Footer left */}
-            <Card
-                topBorder={false}
-                rightBorder
-                bottomBorder={false}
-                leftBorder={false}
-                rounded={false}
-                className="flex h-full w-[264px] shrink-0 items-center p-3"
-            >
-                <Paragraph className="paragraph_tiny">BI Surface v{packageJson.version}</Paragraph>
-            </Card>
-
-            {/* Footer right */}
-            <div className="flex-1 flex flex-row items-center justify-between gap-3 p-3">
+            <div className="flex flex-1 flex-row items-center justify-between gap-3 p-3">
                 {/* Telemetry paragraph */}
-                <Paragraph className="paragraph_tiny">
-                    All telemetry is collected and processed locally.
-                </Paragraph>
+                <Paragraph className="paragraph_tiny">{copy.telemetry}</Paragraph>
 
                 {/* Statement paragraph */}
-                <Paragraph className="paragraph_tiny">Explainable. Local. Transparent.</Paragraph>
+                <Paragraph className="paragraph_tiny">{copy.statement}</Paragraph>
 
                 {/* Links */}
                 <div className="flex flex-row items-center justify-end gap-9">
-                    <div className="flex flex-row items-center gap-1">
-                        <Paragraph className="paragraph_tiny">Icon</Paragraph>
-                        <Paragraph className="paragraph_tiny">Docs</Paragraph>
-                    </div>
-                    <div className="flex flex-row items-center gap-1">
-                        <Paragraph className="paragraph_tiny">Icon</Paragraph>
-                        <Paragraph className="paragraph_tiny">GitHub</Paragraph>
-                    </div>
-                    <div className="flex flex-row items-center gap-1">
-                        <Paragraph className="paragraph_tiny">Icon</Paragraph>
-                        <Paragraph className="paragraph_tiny">Report issue</Paragraph>
-                    </div>
+                    <a
+                        href="https://github.com/piotr-bania/bi-surface"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-row items-center gap-1 hover:opacity-80 transition-all"
+                    >
+                        <PiBookOpenTextDuotone aria-label="GitHub" className="size-4 info" />
+                        <Paragraph className="paragraph_tiny">{copy.docs}</Paragraph>
+                    </a>
+
+                    <a className="flex flex-row items-center gap-1 hover:opacity-80 transition-all">
+                        <PiGithubLogoDuotone aria-label="GitHub" className="size-4 info" />
+                        <Paragraph className="paragraph_tiny">{copy.github}</Paragraph>
+                    </a>
+
+                    <a className="flex flex-row items-center gap-1 hover:opacity-80 transition-all">
+                        <PiInfoDuotone aria-label="Info" className="size-4 info" />
+                        <Paragraph className="paragraph_tiny">{copy.reportIssue}</Paragraph>
+                    </a>
                 </div>
             </div>
         </Card>

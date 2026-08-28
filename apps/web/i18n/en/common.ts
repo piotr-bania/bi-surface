@@ -26,4 +26,12 @@ export const common = {
         minutesAgo: "m ago",
         hoursAgo: "h ago",
     },
+
+    footer: {
+        telemetry: "All telemetry is collected and processed locally.",
+        statement: "Explainable. Local. Transparent.",
+        docs: "Docs",
+        github: "GitHub",
+        reportIssue: "Report issue",
+    },
 }

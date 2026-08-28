@@ -32,6 +32,9 @@ $system_color: #94a3b8;
     --text-muted: #64748b;
     --text-disabled: #94a3b8;
     --border-neutral: rgba(148, 163, 184, 0.2);
+    --scrollbar-track: rgba(33, 212, 255, 0.1);
+    --scrollbar-thumb: #8B5CF6;
+    --scrollbar-thumb-hover: #9A72F8;
 }
 
 [data-theme='light'] {
@@ -44,6 +47,9 @@ $system_color: #94a3b8;
     --text-muted: #64748b;
     --text-disabled: #94a3b8;
     --border-neutral: rgba(51, 65, 85, 0.15);
+    --scrollbar-track: rgba(33, 212, 255, 0.16);
+    --scrollbar-thumb: #8B5CF6;
+    --scrollbar-thumb-hover: #9A72F8;
 }
 
 // ---------- Borders ----------
