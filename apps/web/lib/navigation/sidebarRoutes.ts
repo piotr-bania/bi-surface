@@ -53,6 +53,7 @@ export const sidebarRoutes = [
         exact: false,
         flags: planned({
             requiresAgent: true,
+            requiresElevation: true,
         }),
     },
 
@@ -63,9 +64,9 @@ export const sidebarRoutes = [
         icon: PiTerminalWindowDuotone,
         group: "telemetry",
         exact: false,
-        flags: planned({
+        flags: available({
             requiresAgent: true,
-            requiresElevation: true,
+            // requiresElevation: true,
         }),
     },
 
@@ -91,6 +92,7 @@ export const sidebarRoutes = [
         exact: false,
         flags: planned({
             requiresAgent: true,
+            requiresElevation: true,
         }),
     },
 
@@ -103,6 +105,7 @@ export const sidebarRoutes = [
         exact: false,
         flags: planned({
             requiresAgent: true,
+            requiresElevation: true,
         }),
     },
 
@@ -126,6 +129,8 @@ export const sidebarRoutes = [
         icon: PiGearDuotone,
         group: "configuration",
         exact: false,
-        flags: planned(),
+        flags: planned({
+            requiresElevation: true,
+        }),
     },
 ] as const satisfies readonly SidebarRouteDefinition[]

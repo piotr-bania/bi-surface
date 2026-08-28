@@ -10,7 +10,7 @@ export default function Footer() {
             bottomBorder={false}
             leftBorder={false}
             rounded={false}
-            className="h-12 w-full flex items-center"
+            className="flex h-12 w-full items-center gap-0! p-0!"
         >
             {/* Footer left */}
             <Card
@@ -19,7 +19,7 @@ export default function Footer() {
                 bottomBorder={false}
                 leftBorder={false}
                 rounded={false}
-                className="flex h-full w-[264px] items-center p-3"
+                className="flex h-full w-[264px] shrink-0 items-center p-3"
             >
                 <Paragraph className="paragraph_tiny">BI Surface v{packageJson.version}</Paragraph>
             </Card>
