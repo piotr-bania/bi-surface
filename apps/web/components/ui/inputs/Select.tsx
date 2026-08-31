@@ -24,16 +24,20 @@ export default function Select({
 }: Select_Props) {
     return (
         <div
-            className={`relative inline-flex w-fit items-center border border-[var(--border-neutral)] bg-[var(--panel-light)] rounded-sm ${className}`}
+            className={`relative inline-flex w-fit items-center rounded-sm border border-[var(--border-neutral)] bg-[var(--panel-dark)] ${className}`}
         >
             <select
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
                 aria-label={ariaLabel}
-                className="paragraph_tiny appearance-none bg-transparent py-2 pl-3 pr-8 outline-none cursor-pointer"
+                className="paragraph_tiny cursor-pointer appearance-none bg-transparent py-2 pl-3 pr-8 text-[var(--text-heading)] outline-none"
             >
                 {options.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-[var(--panel-dark)] text-[var(--text-heading)]"
+                    >
                         {option.label}
                     </option>
                 ))}
