@@ -1,5 +1,6 @@
 "use client"
 
+import type { Table_Column } from "@/components/ui/tables/Table"
 import type { ProcessExplorerData } from "@/types/routes/processes"
 
 import { useState } from "react"
@@ -7,6 +8,7 @@ import { useLanguage } from "@/i18n/Language_Context"
 import { getProcessStateStyle } from "@/lib/processes/processStateStyles"
 import { processVisibilityStyles } from "@/lib/processes/processVisibilityStyles"
 
+import Table from "@/components/ui/tables/Table"
 import Paragraph from "@/components/ui/text/Paragraph"
 import Status_Pill from "@/components/ui/pills/Status_Pill"
 import Pagination from "@/components/ui/navigation/Pagination"
@@ -16,6 +18,8 @@ type Process_Explorer_Props = {
     data: ProcessExplorerData
     className?: string
 }
+
+type Process_Explorer_Row = ProcessExplorerData["rows"][number]
 
 function formatIdentifier(value: number | null, unavailable: string): string {
     if (value === null || !Number.isFinite(value)) {
@@ -68,99 +72,112 @@ export default function Process_Explorer({ data, className = "" }: Process_Explo
     const copy = dictionary.processes.processExplorer
     const common = dictionary.processes.common
 
+    const columns: readonly Table_Column<Process_Explorer_Row>[] = [
+        {
+            key: "pid",
+            header: copy.columns.pid,
+            width: 72,
+            cellClassName: "tabular-nums",
+            renderCell: (process) => formatIdentifier(process.pid, common.unavailable),
+        },
+        {
+            key: "ppid",
+            header: copy.columns.ppid,
+            width: 72,
+            cellClassName: "tabular-nums",
+            renderCell: (process) => formatIdentifier(process.ppid, common.unavailable),
+        },
+        {
+            key: "name",
+            header: copy.columns.name,
+            width: "22%",
+            renderCell: (process) => (
+                <span className="block truncate">{process.name ?? common.unavailable}</span>
+            ),
+        },
+        {
+            key: "user",
+            header: copy.columns.user,
+            width: "18%",
+            renderCell: (process) => (
+                <span className="block truncate">{process.username ?? common.unavailable}</span>
+            ),
+        },
+        {
+            key: "cpu",
+            header: copy.columns.cpu,
+            align: "right",
+            width: 90,
+            cellClassName: "tabular-nums",
+            renderCell: (process) =>
+                formatPercentage(process.cpuPercent, language, common.unavailable),
+        },
+        {
+            key: "memory-percent",
+            header: copy.columns.memoryPercent,
+            align: "right",
+            width: 90,
+            cellClassName: "tabular-nums",
+            renderCell: (process) =>
+                formatPercentage(process.memoryPercent, language, common.unavailable),
+        },
+        {
+            key: "memory",
+            header: copy.columns.memory,
+            align: "right",
+            width: 110,
+            cellClassName: "tabular-nums",
+            renderCell: (process) => formatMemory(process.memoryMb, language, common.unavailable),
+        },
+        {
+            key: "threads",
+            header: copy.columns.threads,
+            align: "right",
+            width: 90,
+            cellClassName: "tabular-nums",
+            renderCell: (process) => formatIdentifier(process.threads, common.unavailable),
+        },
+        {
+            key: "state",
+            header: copy.columns.state,
+            align: "right",
+            width: 110,
+            renderCell: (process) => (
+                <span className={`uppercase ${getProcessStateStyle(process.status)}`}>
+                    {process.status ?? common.unavailable}
+                </span>
+            ),
+        },
+        {
+            key: "visibility",
+            header: copy.columns.visibility,
+            align: "right",
+            width: 110,
+            renderCell: (process) => (
+                <div className="flex justify-end">
+                    <Status_Pill className={processVisibilityStyles[process.visibility]}>
+                        {process.visibility}
+                    </Status_Pill>
+                </div>
+            ),
+        },
+    ]
+
     return (
         <Section_Frame title={copy.title} className={className} contentClassName="px-3 pb-3 pt-2">
             <div className="flex min-h-0 flex-col">
-                <div className="grid grid-cols-[72px_72px_minmax(180px,1.4fr)_minmax(120px,1fr)_90px_90px_110px_90px_110px_110px] items-center gap-3 border-y border-[var(--border-neutral)] bg-[var(--panel-light)] px-3 py-2">
-                    <Paragraph className="paragraph_tiny uppercase">{copy.columns.pid}</Paragraph>
-                    <Paragraph className="paragraph_tiny uppercase">{copy.columns.ppid}</Paragraph>
-                    <Paragraph className="paragraph_tiny uppercase">{copy.columns.name}</Paragraph>
-                    <Paragraph className="paragraph_tiny uppercase">{copy.columns.user}</Paragraph>
-                    <Paragraph className="paragraph_tiny text-right uppercase">
-                        {copy.columns.cpu}
-                    </Paragraph>
-                    <Paragraph className="paragraph_tiny text-right uppercase">
-                        {copy.columns.memoryPercent}
-                    </Paragraph>
-                    <Paragraph className="paragraph_tiny text-right uppercase">
-                        {copy.columns.memory}
-                    </Paragraph>
-                    <Paragraph className="paragraph_tiny text-right uppercase">
-                        {copy.columns.threads}
-                    </Paragraph>
-                    <Paragraph className="paragraph_tiny text-right uppercase">
-                        {copy.columns.state}
-                    </Paragraph>
-                    <Paragraph className="paragraph_tiny text-right uppercase">
-                        {copy.columns.visibility}
-                    </Paragraph>
-                </div>
-
-                {data.rows.length > 0 ? (
-                    <ul className="flex flex-col">
-                        {visibleRows.map((process) => (
-                            <li
-                                key={process.pid}
-                                className="grid grid-cols-[72px_72px_minmax(180px,1.4fr)_minmax(120px,1fr)_90px_90px_110px_90px_110px_110px] items-center gap-3 border-b border-[var(--border-neutral)] px-3 py-2"
-                            >
-                                <span className="paragraph_tiny tabular-nums">
-                                    {formatIdentifier(process.pid, common.unavailable)}
-                                </span>
-                                <span className="paragraph_tiny tabular-nums">
-                                    {formatIdentifier(process.ppid, common.unavailable)}
-                                </span>
-                                <span className="paragraph_tiny truncate">
-                                    {process.name ?? common.unavailable}
-                                </span>
-                                <span className="paragraph_tiny truncate">
-                                    {process.username ?? common.unavailable}
-                                </span>
-                                <span className="paragraph_tiny text-right tabular-nums">
-                                    {formatPercentage(
-                                        process.cpuPercent,
-                                        language,
-                                        common.unavailable
-                                    )}
-                                </span>
-                                <span className="paragraph_tiny text-right tabular-nums">
-                                    {formatPercentage(
-                                        process.memoryPercent,
-                                        language,
-                                        common.unavailable
-                                    )}
-                                </span>
-                                <span className="paragraph_tiny text-right tabular-nums">
-                                    {formatMemory(process.memoryMb, language, common.unavailable)}
-                                </span>
-                                <span className="paragraph_tiny text-right tabular-nums">
-                                    {formatIdentifier(process.threads, common.unavailable)}
-                                </span>
-                                <div className="flex justify-end">
-                                    <span
-                                        className={`paragraph_tiny text-right uppercase ${getProcessStateStyle(
-                                            process.status
-                                        )}`}
-                                    >
-                                        {process.status ?? common.unavailable}
-                                    </span>
-                                </div>
-                                <div className="flex justify-end">
-                                    <Status_Pill
-                                        className={processVisibilityStyles[process.visibility]}
-                                    >
-                                        {process.visibility}
-                                    </Status_Pill>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <div className="flex min-h-24 items-center justify-center border-b border-[var(--border-neutral)] px-4 text-center">
+                <Table
+                    ariaLabel={copy.title}
+                    columns={columns}
+                    rows={visibleRows}
+                    getRowKey={(process) => process.pid}
+                    tableClassName="min-w-[1120px] table-fixed"
+                    emptyState={
                         <Paragraph className="paragraph_small muted_color">
                             {common.unavailable}
                         </Paragraph>
-                    </div>
-                )}
+                    }
+                />
 
                 {data.rows.length > 0 && (
                     <Pagination

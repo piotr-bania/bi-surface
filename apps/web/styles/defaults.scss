@@ -49,3 +49,23 @@ body {
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
+
+// ---------- Custom Select ----------
+select {
+    background: var(--panel-light);
+    color: var(--text-paragraph);
+    font-size: $paragraph_small;
+    border-radius: 4px;
+}
+
+select option {
+    background: var(--panel-dark);
+    color: var(--text-paragraph);
+    font-size: $paragraph_small;
+}
+
+select option:checked {
+    background: var(--panel-light);
+    color: $primary_color;
+    font-size: $paragraph_small;
+}
