@@ -80,7 +80,6 @@ export type DashboardDictionary = {
     }
 
     hostPosture: {
-        frameNumber: string
         title: string
 
         labels: {
@@ -100,7 +99,6 @@ export type DashboardDictionary = {
     }
 
     visibilityCoverage: {
-        frameNumber: string
         title: string
 
         summary: {
@@ -116,7 +114,6 @@ export type DashboardDictionary = {
     }
 
     investigationQueue: {
-        frameNumber: string
         title: string
 
         metrics: Record<InvestigationQueueMetric, string>

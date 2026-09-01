@@ -74,12 +74,7 @@ export default function Host_Posture({ data, className = "" }: Host_Posture_Prop
     const operatingSystem = [data.operatingSystem, data.osVersion].filter(Boolean).join(" · ")
 
     return (
-        <Section_Frame
-            number={copy.frameNumber}
-            title={copy.title}
-            className={className}
-            contentClassName="px-4 pb-4 pt-3"
-        >
+        <Section_Frame title={copy.title} className={className} contentClassName="px-4 pb-4 pt-3">
             <div className="flex w-full flex-col items-center justify-between gap-5 md:flex-row">
                 <div className="flex justify-center md:flex-1">
                     <div

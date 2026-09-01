@@ -27,14 +27,18 @@ export const processes: ProcessesDictionary = {
         title: "Process Explorer",
         placeholder: "Live process table will render here.",
         searchPlaceholder: "Search name, PID or user...",
+        searchAriaLabel: "Search processes",
         filters: {
             allStates: "All States",
             allUsers: "All Users",
             allVisibility: "All Visibility",
         },
         controls: {
+            sortAriaLabel: "Sort processes",
             cpuDescending: "CPU % Desc",
+            cpuAscending: "CPU % Asc",
             autoRefresh: "Auto Refresh",
+            refreshIntervalAriaLabel: "Process refresh interval",
             refreshNow: "Refresh Now",
         },
         columns: {

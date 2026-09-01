@@ -60,19 +60,19 @@ export default function Pagination({
     const paginationItems = createPaginationItems(page, totalPages)
 
     return (
-        <div className="flex items-center justify-between gap-4 pt-3">
+        <div className="flex items-center justify-between gap-4 pt-2">
             <Paragraph className="paragraph_tiny primary_color whitespace-nowrap">
                 {showingLabel} {start}–{end} {ofLabel} {totalItems} {itemLabel}
             </Paragraph>
 
             <div className="flex items-center gap-12">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                     <button
                         type="button"
                         disabled={page === 1}
                         onClick={() => onPageChange(page - 1)}
                         aria-label="Previous page"
-                        className={page === 1 ? undefined : "panel_light_color"}
+                        className={`h-7 min-h-0! px-2 py-1 ${page === 1 ? "" : "panel_light_color"}`}
                     >
                         <PiCaretLeftDuotone className="size-4" />
                     </button>
@@ -96,7 +96,7 @@ export default function Pagination({
                                 type="button"
                                 onClick={() => onPageChange(item)}
                                 aria-current={item === page ? "page" : undefined}
-                                className={`flex items-center justify-center ${
+                                className={`h-7 min-h-0! px-2 py-1 ${
                                     item === page
                                         ? "sidebar-button primary_color primary_border_color panel_light_color"
                                         : "panel_light_color"
@@ -112,7 +112,7 @@ export default function Pagination({
                         disabled={page === totalPages}
                         onClick={() => onPageChange(page + 1)}
                         aria-label="Next page"
-                        className={page === totalPages ? undefined : "panel_light_color"}
+                        className={`h-7 min-h-0! px-2 py-1 ${page === totalPages ? "" : "panel_light_color"}`}
                     >
                         <PiCaretRightDuotone className="size-4" />
                     </button>
