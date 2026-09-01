@@ -55,12 +55,7 @@ export default function Visibility_Coverage({ data, className = "" }: Visibility
     const hasElevationRequirement = data.items.some((item) => item.requiresElevation)
 
     return (
-        <Section_Frame
-            number={copy.frameNumber}
-            title={copy.title}
-            className={className}
-            contentClassName="px-4 pb-4 pt-3"
-        >
+        <Section_Frame title={copy.title} className={className} contentClassName="px-4 pb-4 pt-3">
             <div className="flex h-full flex-col gap-4 sm:flex-row">
                 <ul className="flex min-w-0 flex-1 flex-col justify-center gap-4">
                     {data.items.map((item) => {

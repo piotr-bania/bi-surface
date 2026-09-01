@@ -13,7 +13,16 @@ type Process_Explorer_Container_Props = {
 export default function Process_Explorer_Container({
     className = "",
 }: Process_Explorer_Container_Props) {
-    const { processes } = useAgentConnection()
+    const {
+        connectionState,
+        processes,
+        processesAutoRefresh,
+        processesRefreshInterval,
+        processesRefreshing,
+        setProcessesAutoRefresh,
+        setProcessesRefreshInterval,
+        refreshProcesses,
+    } = useAgentConnection()
 
     const data = useMemo(
         () =>
@@ -23,5 +32,17 @@ export default function Process_Explorer_Container({
         [processes]
     )
 
-    return <Process_Explorer data={data} className={className} />
+    return (
+        <Process_Explorer
+            data={data}
+            autoRefresh={processesAutoRefresh}
+            onAutoRefreshChange={setProcessesAutoRefresh}
+            refreshInterval={processesRefreshInterval}
+            onRefreshIntervalChange={setProcessesRefreshInterval}
+            canRefresh={connectionState === "connected"}
+            isRefreshing={processesRefreshing}
+            onRefresh={refreshProcesses}
+            className={className}
+        />
+    )
 }

@@ -8,7 +8,6 @@ export const dashboard: DashboardDictionary = {
     },
 
     hostPosture: {
-        frameNumber: "1.",
         title: "Host Posture",
         labels: {
             hostname: "Hostname",
@@ -35,7 +34,6 @@ export const dashboard: DashboardDictionary = {
     },
 
     visibilityCoverage: {
-        frameNumber: "2.",
         title: "Visibility Coverage",
         summary: {
             overall: "Collectors",
@@ -61,7 +59,6 @@ export const dashboard: DashboardDictionary = {
     },
 
     investigationQueue: {
-        frameNumber: "3.",
         title: "Investigation Queue",
         metrics: {
             critical: "Critical",

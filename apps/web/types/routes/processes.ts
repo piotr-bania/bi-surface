@@ -29,6 +29,8 @@ export type ProcessExplorerData = {
     total: number
 }
 
+export type ProcessRefreshInterval = 2_000 | 5_000 | 10_000 | 30_000
+
 export type ProcessesDictionary = {
     page: {
         title: string
@@ -56,14 +58,18 @@ export type ProcessesDictionary = {
         title: string
         placeholder: string
         searchPlaceholder: string
+        searchAriaLabel: string
         filters: {
             allStates: string
             allUsers: string
             allVisibility: string
         }
         controls: {
+            sortAriaLabel: string
             cpuDescending: string
+            cpuAscending: string
             autoRefresh: string
+            refreshIntervalAriaLabel: string
             refreshNow: string
         }
         columns: {

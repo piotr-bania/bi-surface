@@ -27,14 +27,18 @@ export const processes: ProcessesDictionary = {
         title: "Prozess-Explorer",
         placeholder: "Die Live-Prozesstabelle wird hier angezeigt.",
         searchPlaceholder: "Name, PID oder Benutzer suchen...",
+        searchAriaLabel: "Prozesse durchsuchen",
         filters: {
             allStates: "Alle Zustände",
             allUsers: "Alle Benutzer",
             allVisibility: "Alle Sichtbarkeiten",
         },
         controls: {
+            sortAriaLabel: "Prozesse sortieren",
             cpuDescending: "CPU % absteigend",
+            cpuAscending: "CPU % aufsteigend",
             autoRefresh: "Auto-Aktualisierung",
+            refreshIntervalAriaLabel: "Prozess-Aktualisierungsintervall",
             refreshNow: "Jetzt aktualisieren",
         },
         columns: {

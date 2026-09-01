@@ -1,5 +1,7 @@
 "use client"
 
+import type { ReactNode } from "react"
+
 import { PiCaretDownDuotone } from "react-icons/pi"
 
 type SelectOption = {
@@ -12,6 +14,8 @@ type Select_Props = {
     options: SelectOption[]
     onChange: (value: string) => void
     ariaLabel: string
+    leadingIcon?: ReactNode
+    disabled?: boolean
     className?: string
 }
 
@@ -20,17 +24,33 @@ export default function Select({
     options,
     onChange,
     ariaLabel,
+    leadingIcon,
+    disabled = false,
     className = "",
 }: Select_Props) {
     return (
         <div
-            className={`relative inline-flex w-fit items-center rounded-sm border border-[var(--border-neutral)] ${className}`}
+            className={`relative inline-flex w-fit items-center rounded-sm border border-[var(--border-neutral)] ${
+                disabled ? "cursor-not-allowed opacity-60" : ""
+            } ${className}`}
         >
+            {leadingIcon && (
+                <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-2 flex size-4 items-center justify-center text-[var(--text-paragraph)]"
+                >
+                    {leadingIcon}
+                </span>
+            )}
+
             <select
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
                 aria-label={ariaLabel}
-                className="paragraph_small cursor-pointer appearance-none py-2 pl-3 pr-7 text-[var(--text-heading)] outline-none"
+                disabled={disabled}
+                className={`paragraph_small appearance-none py-1 pr-7 ${leadingIcon ? "pl-8" : "pl-3"} text-[var(--text-heading)] outline-none ${
+                    disabled ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
             >
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>

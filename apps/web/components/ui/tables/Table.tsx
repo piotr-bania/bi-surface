@@ -59,7 +59,7 @@ export default function Table<T>({
                                 <th
                                     key={column.key}
                                     scope="col"
-                                    className={`paragraph_tiny px-3 py-2 font-normal uppercase ${alignmentClasses[alignment]} ${column.headerClassName ?? ""}`}
+                                    className={`paragraph_tiny px-3 py-1 font-normal uppercase ${alignmentClasses[alignment]} ${column.headerClassName ?? ""}`}
                                 >
                                     {column.header}
                                 </th>
@@ -87,7 +87,7 @@ export default function Table<T>({
                                         return (
                                             <td
                                                 key={column.key}
-                                                className={`paragraph_tiny px-3 py-2 ${alignmentClasses[alignment]} ${column.cellClassName ?? ""}`}
+                                                className={`paragraph_tiny px-3 py-1 ${alignmentClasses[alignment]} ${column.cellClassName ?? ""}`}
                                             >
                                                 {column.renderCell(row, rowIndex)}
                                             </td>

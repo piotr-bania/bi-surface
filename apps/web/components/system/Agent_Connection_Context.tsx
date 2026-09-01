@@ -22,6 +22,7 @@ import {
     type SystemResponse,
     type TelemetryResponse,
 } from "@/types/agent"
+import type { ProcessRefreshInterval } from "@/types/routes/processes"
 
 import { useLanguage } from "@/i18n/Language_Context"
 
@@ -32,7 +33,6 @@ const AGENT_PROCESSES_URL = "http://127.0.0.1:8000/api/v1/processes"
 
 const CONNECTION_TIMEOUT_MS = 5_000
 const TELEMETRY_INTERVAL_MS = 1_500
-const PROCESSES_INTERVAL_MS = 5_000
 const DISCONNECT_TRANSITION_MS = 500
 
 type Agent_Connection_Context_Value = {
@@ -42,9 +42,16 @@ type Agent_Connection_Context_Value = {
     telemetry: TelemetryResponse | null
     processes: ProcessesResponse | null
     lastUpdated: number | null
+    processesLastUpdated: number | null
+    processesAutoRefresh: boolean
+    processesRefreshInterval: ProcessRefreshInterval
+    processesRefreshing: boolean
     message: string | null
     connectAgent: () => Promise<void>
     disconnectAgent: () => void
+    setProcessesAutoRefresh: (enabled: boolean) => void
+    setProcessesRefreshInterval: (interval: ProcessRefreshInterval) => void
+    refreshProcesses: () => Promise<void>
 }
 
 type Agent_Connection_Provider_Props = {
@@ -77,6 +84,11 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
     const [telemetry, setTelemetry] = useState<TelemetryResponse | null>(null)
     const [processes, setProcesses] = useState<ProcessesResponse | null>(null)
     const [lastUpdated, setLastUpdated] = useState<number | null>(null)
+    const [processesLastUpdated, setProcessesLastUpdated] = useState<number | null>(null)
+    const [processesAutoRefresh, setProcessesAutoRefresh] = useState(true)
+    const [processesRefreshInterval, setProcessesRefreshInterval] =
+        useState<ProcessRefreshInterval>(5_000)
+    const [processesRefreshing, setProcessesRefreshing] = useState(false)
     const [connectionMessage, setConnectionMessage] = useState<string | null>(null)
     const [telemetryMessage, setTelemetryMessage] = useState<string | null>(null)
     const [processesMessage, setProcessesMessage] = useState<string | null>(null)
@@ -92,6 +104,8 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
         setTelemetry(null)
         setProcesses(null)
         setLastUpdated(null)
+        setProcessesLastUpdated(null)
+        setProcessesRefreshing(false)
 
         setConnectionMessage(null)
         setTelemetryMessage(null)
@@ -143,6 +157,8 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
             setTelemetry(null)
             setProcesses(null)
             setLastUpdated(null)
+            setProcessesLastUpdated(null)
+            setProcessesRefreshing(false)
 
             if (didTimeOut) {
                 setConnectionState("timed_out")
@@ -237,50 +253,61 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
         }
     }, [connectionState, messages.invalidTelemetry, messages.telemetryRefreshFailed])
 
+    const refreshProcesses = useCallback(async () => {
+        if (connectionState !== "connected" || processesRequestController.current) {
+            return
+        }
+
+        const controller = new AbortController()
+        processesRequestController.current = controller
+        setProcessesRefreshing(true)
+
+        try {
+            const data = await requestJson(AGENT_PROCESSES_URL, controller.signal)
+
+            if (!isProcessesResponse(data)) {
+                throw new Error(messages.invalidProcesses)
+            }
+
+            setProcesses(data)
+            setProcessesLastUpdated(Date.now())
+            setProcessesMessage(null)
+        } catch (error: unknown) {
+            if (error instanceof DOMException && error.name === "AbortError") {
+                return
+            }
+
+            setProcessesMessage(
+                error instanceof Error ? error.message : messages.processesRefreshFailed
+            )
+        } finally {
+            if (processesRequestController.current === controller) {
+                processesRequestController.current = null
+                setProcessesRefreshing(false)
+            }
+        }
+    }, [connectionState, messages.invalidProcesses, messages.processesRefreshFailed])
+
     useEffect(() => {
-        if (connectionState !== "connected") {
+        if (connectionState !== "connected" || !processesAutoRefresh) {
             return
         }
 
         let cancelled = false
         let refreshTimeoutId: number | undefined
 
-        async function refreshProcesses() {
-            const controller = new AbortController()
+        async function runProcessRefreshCycle() {
+            await refreshProcesses()
 
-            processesRequestController.current = controller
-
-            try {
-                const data = await requestJson(AGENT_PROCESSES_URL, controller.signal)
-
-                if (!isProcessesResponse(data)) {
-                    throw new Error(messages.invalidProcesses)
-                }
-
-                if (!cancelled) {
-                    setProcesses(data)
-                    setProcessesMessage(null)
-                }
-            } catch (error: unknown) {
-                if (cancelled || (error instanceof DOMException && error.name === "AbortError")) {
-                    return
-                }
-
-                setProcessesMessage(
-                    error instanceof Error ? error.message : messages.processesRefreshFailed
+            if (!cancelled) {
+                refreshTimeoutId = window.setTimeout(
+                    runProcessRefreshCycle,
+                    processesRefreshInterval
                 )
-            } finally {
-                if (processesRequestController.current === controller) {
-                    processesRequestController.current = null
-                }
-
-                if (!cancelled) {
-                    refreshTimeoutId = window.setTimeout(refreshProcesses, PROCESSES_INTERVAL_MS)
-                }
             }
         }
 
-        refreshProcesses()
+        void runProcessRefreshCycle()
 
         return () => {
             cancelled = true
@@ -291,8 +318,9 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
 
             processesRequestController.current?.abort()
             processesRequestController.current = null
+            setProcessesRefreshing(false)
         }
-    }, [connectionState, messages.invalidProcesses, messages.processesRefreshFailed])
+    }, [connectionState, processesAutoRefresh, processesRefreshInterval, refreshProcesses])
 
     const disconnectAgent = useCallback(() => {
         setConnectionState("disconnecting")
@@ -303,6 +331,8 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
         processesRequestController.current?.abort()
         processesRequestController.current = null
         setLastUpdated(null)
+        setProcessesLastUpdated(null)
+        setProcessesRefreshing(false)
 
         disconnectTimeout.current = window.setTimeout(() => {
             clearAgentData()
@@ -333,9 +363,16 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
             telemetry,
             processes,
             lastUpdated,
+            processesLastUpdated,
+            processesAutoRefresh,
+            processesRefreshInterval,
+            processesRefreshing,
             message,
             connectAgent,
             disconnectAgent,
+            setProcessesAutoRefresh,
+            setProcessesRefreshInterval,
+            refreshProcesses,
         }),
         [
             connectionState,
@@ -344,9 +381,14 @@ export function Agent_Connection_Provider({ children }: Agent_Connection_Provide
             telemetry,
             processes,
             lastUpdated,
+            processesLastUpdated,
+            processesAutoRefresh,
+            processesRefreshInterval,
+            processesRefreshing,
             message,
             connectAgent,
             disconnectAgent,
+            refreshProcesses,
         ]
     )
 
